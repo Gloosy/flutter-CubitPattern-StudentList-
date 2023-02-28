@@ -15,9 +15,6 @@ class ApiRepository {
     var response = await apiService.fetchStudent(AppUrl.getArticles);
     bool results = await InternetConnectionChecker().hasConnection;
     if (results == true) {
-      print("Test Data");
-      print(response);
-
       var data = await response?.data;
       if (data != null) {
         var responseData = StudentListModel.fromJson(data);

@@ -12,12 +12,8 @@ class StudentCubit extends Cubit<StudentListModel> {
   final ApiRepository apiRepository;
   StudentCubit({required this.apiRepository}) : super(StudentListModel());
 
-  void fetchStudent() {
-    // emit(StudentListModel());
-    apiRepository.getPostList().then((value) {
-      emit(value);
-    }).catchError((error) {
-      emit(StudentListModel());
-    });
+  void fetchStudent() async {
+    var data = await apiRepository.getPostList();
+    emit(data);
   }
 }

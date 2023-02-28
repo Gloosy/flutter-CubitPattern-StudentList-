@@ -53,6 +53,11 @@ class _HomepageState extends State<Homepage> {
         builder: (context, state) {
           print("Data loaded is here by NONG Piseth:");
           print(state);
+          print(state.data?[0].name);
+          print(state.data?[0].fatherName);
+          print(state.data?[0].motherName);
+          print(state.data?[0].examDate);
+          print(state.data?[0].DOB);
           if ((state is StudentLoading)) {
             return Center(
               child: Text('THIS IS LOADING STUDENT'),
@@ -266,150 +271,6 @@ class _HomepageState extends State<Homepage> {
                               child: DOBAndExamDate(),
                             ),
 
-                            /*
-              // input number of certificate
-              Container(
-                height : Responsive.height(60, context),
-                width  : Responsive.width(380, context),
-                padding: EdgeInsets.only(
-                    left : Responsive.width(10, context),
-                    top  : Responsive.width(15, context)
-                ),
-                child: TextField(
-                  /////// --------------- get value number of certificate from user in this place /////// ---------------
-
-                  controller: numberOfCertificate,
-
-                  decoration: InputDecoration(
-                    labelText        : 'លេខចុះបញ្ជី',
-                    focusedBorder    : OutlineInputBorder(
-                        borderRadius : BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide   : BorderSide(width: 1.0, color: Colors.white)),
-                    enabledBorder    : OutlineInputBorder(
-                        borderRadius : BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide   :
-                        BorderSide(width: 1.0, color: Colors.white)),
-                  ),
-                ),
-              ),
-              // select gender
-              Container(
-                // Stack for Position of Gender
-                child: Stack(
-                  children: [
-                    Positioned(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: Responsive.width(50, context),
-                            top : Responsive.height(15, context)
-                        ),
-                        child: Text(
-                          '*ភេទ', style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: '',
-                        ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                        child: Container(
-                          width: Responsive.width(300, context),
-                          margin: EdgeInsets.only(
-                              left: Responsive.width(80, context)
-                          ),
-                          padding: EdgeInsets.only(
-                              left: Responsive.width(70, context),
-                              top: Responsive.height(10, context),
-                              right: Responsive.width(3, context)
-                          ),
-
-                          // this toggle button
-                          child: ToggleButton(
-                            width: Responsive.width(200, context),
-                            height: Responsive.height(50.0, context),
-                            toggleBackgroundColor: Colors.white,
-                            toggleBorderColor: (Colors.grey[350])!,
-                            toggleColor: Color(0x021F65),
-                            activeTextColor: Colors.white,
-                            inactiveTextColor: Colors.black,
-                            leftDescription: 'MALE',
-                            rightDescription: 'FEMALE',
-                            onLeftToggleActive: () {
-                              print('left toggle activated');
-                            },
-                            onRightToggleActive: () {
-                              print('right toggle activated');
-                            },
-                          ),
-                        )),
-                  ],
-                ),
-              ),
-              // input Room
-              Container(
-                height : Responsive.height(60, context),
-                width  : Responsive.width(380, context),
-                padding: EdgeInsets.only(
-                    left : Responsive.width(10, context),
-                    top  : Responsive.width(15, context)
-                ),
-                child: TextField(
-                  /////// --------------- get value from user in this place /////// ---------------
-
-                  controller: numberOfRoom,
-
-                  decoration: InputDecoration(
-                    labelText: 'លេខបន្ទប់',
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide: BorderSide(width: 1.0, color: Colors.white)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide:
-                        BorderSide(width: 1.0, color: Colors.white)),
-                  ),
-                ),
-              ),
-
-              // input table
-              Container(
-                height : Responsive.height(60, context),
-                width  : Responsive.width(380, context),
-                padding: EdgeInsets.only(
-                    left : Responsive.width(10, context),
-                    top  : Responsive.width(15, context)
-                ),
-                child: TextField(
-                  ///////// --------------- get value number of table from user in this place /////// ---------------
-
-                  controller: numberOfTable,
-
-                  decoration          : InputDecoration(
-                    labelText         : 'លេខតុ',
-                    focusedBorder     : OutlineInputBorder(
-                        borderRadius  : BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide    : BorderSide(width: 1.0, color: Colors.white)),
-                    enabledBorder     : OutlineInputBorder(
-                        borderRadius  : BorderRadius.circular(
-                            Responsive.radiusSize(10, context)),
-                        borderSide:
-                        BorderSide(width: 1.0, color: Colors.white)),
-                  ),
-                ),
-              ),
-              Container(
-                width  : Responsive.width(500, context),
-                height : Responsive.height(120, context),
-                child  : DropDownButton(),
-              ),
-
-               */
-
                             Container(
                               margin: EdgeInsets.only(
                                   top: Responsive.height(5, context),
@@ -443,12 +304,6 @@ class _HomepageState extends State<Homepage> {
                   );
                   return Container();
                 });
-            // return SingleChildScrollView(
-            //   child: Column(children: todos!.map((e) => _student(e)).toList()),
-            // );
-          } else if ((state is StudentError)) {
-            //print(state.errors.toString());
-            // return Center(child: Text(state.errors.toString()));
           }
           return Container();
         },
