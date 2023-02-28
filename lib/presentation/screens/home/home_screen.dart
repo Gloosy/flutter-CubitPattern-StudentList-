@@ -49,24 +49,23 @@ class _HomepageState extends State<Homepage> {
     // Create BlocProvider to create state and event listener here
     BlocProvider.of<StudentCubit>(context).fetchStudent();
     return Scaffold(
-      body: BlocBuilder<StudentCubit, StudentState>(
+      body: BlocBuilder<StudentCubit, StudentListModel>(
         builder: (context, state) {
-          print("\n========this is State === ====== >${state.toString()}");
+          print("Data loaded is here by NONG Piseth:");
+          print(state);
           if ((state is StudentLoading)) {
             return Center(
               child: Text('THIS IS LOADING STUDENT'),
             );
           } else if ((state is StudentLoaded)) {
-            final todos = state.students!;
-            print('data in state : ${state.students}');
-            print('data in cubit : ${StudentCubit}');
+            final todos = state.data!;
             child:
             ListView.builder(
                 itemCount: todos.length,
                 itemBuilder: (context, index) {
                   final studentData = todos[index];
                   Dismissible(
-                    key: Key("${studentData.data![index].Id}"),
+                    key: Key("${studentData.Id}"),
                     child: SafeArea(
                       bottom: false,
                       child: SingleChildScrollView(
@@ -128,8 +127,7 @@ class _HomepageState extends State<Homepage> {
                                 child: TextFormField(
                                   controller: _nameController,
                                   decoration: InputDecoration(
-                                    labelText:
-                                        studentData.data![index].name ?? "",
+                                    labelText: studentData.name ?? "",
                                     hintStyle:
                                         MaterialStateTextStyle.resolveWith(
                                             (Set<MaterialState> states) {
@@ -202,7 +200,7 @@ class _HomepageState extends State<Homepage> {
                                 validator: (value) {
                                   if (value!.isEmpty ||
                                       !RegExp(r'^[a-z A-Z]+$')
-                                          .hasMatch(value!)) {
+                                          .hasMatch(value)) {
                                     return "";
                                   } else {
                                     return null;
@@ -224,8 +222,7 @@ class _HomepageState extends State<Homepage> {
                                 controller: _motherName,
                                 autofocus: false,
                                 decoration: InputDecoration(
-                                  labelText:
-                                      studentData.data![index].motherName ?? "",
+                                  labelText: studentData.motherName ?? "",
                                   hintStyle: MaterialStateTextStyle.resolveWith(
                                       (Set<MaterialState> states) {
                                     final Color color = states
@@ -249,7 +246,7 @@ class _HomepageState extends State<Homepage> {
                                 validator: (value) {
                                   if (value!.isEmpty ||
                                       !RegExp(r'^[a-z A-Z]+$')
-                                          .hasMatch(value!)) {
+                                          .hasMatch(value)) {
                                     return "";
                                   } else {
                                     return null;
@@ -424,9 +421,8 @@ class _HomepageState extends State<Homepage> {
                                   var name = _nameController;
                                   var fatherName = _fatherName;
                                   var motherName = _motherName;
-                                  print("Hello heelo");
                                 },
-                                child: Text('កែប្រែ'),
+                                child: const Text('កែប្រែ'),
                               ),
                             ),
                             ...recentCourses
@@ -445,14 +441,14 @@ class _HomepageState extends State<Homepage> {
                       ),
                     ),
                   );
-                  return null;
+                  return Container();
                 });
             // return SingleChildScrollView(
             //   child: Column(children: todos!.map((e) => _student(e)).toList()),
             // );
           } else if ((state is StudentError)) {
-            print(state.errors.toString());
-            return Center(child: Text(state.errors.toString()));
+            //print(state.errors.toString());
+            // return Center(child: Text(state.errors.toString()));
           }
           return Container();
         },
@@ -477,7 +473,7 @@ class _HomepageState extends State<Homepage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 40),
+                          const SizedBox(height: 40),
                           Padding(
                             padding: EdgeInsets.only(
                                 left: Responsive.width(95, context),
@@ -517,7 +513,7 @@ class _HomepageState extends State<Homepage> {
                                 left: Responsive.width(90, context)),
                             height: Responsive.height(200, context),
                             width: Responsive.height(200, context),
-                            child: ImagePickerView(),
+                            child: const ImagePickerView(),
                           ),
                           // input name
                           Container(
@@ -602,7 +598,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty ||
-                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
                                   return "";
                                 } else {
                                   return null;
@@ -647,7 +643,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty ||
-                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
                                   return "";
                                 } else {
                                   return null;
@@ -822,9 +818,8 @@ class _HomepageState extends State<Homepage> {
                                 var name = _nameController;
                                 var fatherName = _fatherName;
                                 var motherName = _motherName;
-                                print("Hello heelo");
                               },
-                              child: Text('កែប្រែ'),
+                              child: const Text('កែប្រែ'),
                             ),
                           ),
                           ...recentCourses
@@ -843,7 +838,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 );
-                return null;
+                return Container();
               })),
     );
   }

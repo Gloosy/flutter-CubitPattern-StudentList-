@@ -8,22 +8,16 @@ import 'package:rive_animation/data/repository/getrepository.dart';
 
 part 'cubit_state.dart';
 
-class StudentCubit extends Cubit<StudentState> {
+class StudentCubit extends Cubit<StudentListModel> {
   final ApiRepository apiRepository;
-  StudentCubit({required this.apiRepository}) : super(StudentInitial());
+  StudentCubit({required this.apiRepository}) : super(StudentListModel());
 
   void fetchStudent() {
-    emit(StudentLoading());
-
-    
+    // emit(StudentListModel());
     apiRepository.getPostList().then((value) {
-      final List<StudentListModel> studentList =
-        (value as List).map((e) => StudentListModel.fromJson(e)).toList();
-      final studentMap = studentList.map((student) => student.toJson()).toList();
-      print("Data Student in Cubit : ${studentMap}");
-      emit(StudentLoaded(students: studentList ?? []));
+      emit(value);
     }).catchError((error) {
-      emit(StudentError(error.toString()));
+      emit(StudentListModel());
     });
   }
 }

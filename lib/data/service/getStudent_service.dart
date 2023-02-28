@@ -10,7 +10,7 @@ import 'dart:convert';
 
 class DioService {
   Dio dio = Dio();
-  Future<StudentListModel> fetchStudent(String url) async {
+  Future<Response?> fetchStudent(String url) async {
     var headers = {
       'appid': 'BEB03CD3-7204-405F-BE41-58EC27F2AEBD',
       'firebase_token':
@@ -20,23 +20,15 @@ class DioService {
     };
 
     try {
-      return await dio
-          .get(url,
-              options: Options(
-                  headers: headers,
-                  responseType: ResponseType.json,
-                  method: 'GET'))
-          .then((response) {
-        //print(re)
-        print(response.data);
-        var data = json.decode(response.data);
-
-        return response.data as StudentListModel;
-      });
+      return await dio.get(url,
+          options: Options(
+              headers: headers,
+              responseType: ResponseType.json,
+              method: 'GET'));
     } catch (e) {
       // add more catch
-      print(e);
+      print(e.toString());
     }
-    return new StudentListModel();
+    return null;
   }
 }
