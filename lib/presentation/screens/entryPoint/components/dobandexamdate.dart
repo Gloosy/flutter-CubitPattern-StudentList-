@@ -10,8 +10,31 @@ enum DATE { DOB, EXAMDATE }
 // we have to add the of element tree
 
 class DOBAndExamDate extends StatefulWidget {
-  const DOBAndExamDate({Key? key})
-      : super(key: key);
+  
+  final void Function(DateTime value, DateTime valueExam) onValueChanged;
+
+  FocusNode? focusNodeDOB;
+  FocusNode? focusNodeExam;
+  FocusNode? focusNodeName;
+  FocusNode? focusNodefather;
+  FocusNode? focusNodemother;
+
+  var studentExam;
+
+  var studentDOB;
+
+  DOBAndExamDate({
+    Key? key,
+    this.studentDOB,
+    required this.studentExam,
+    required this.onValueChanged,
+    this.focusNodeDOB,
+    this.focusNodeExam,
+    this.focusNodeName,
+    this.focusNodefather,
+    this.focusNodemother,
+  }) : super(key: key);
+
   @override
   State<DOBAndExamDate> createState() => _DOBAndExamDateState();
 }
@@ -19,7 +42,7 @@ class DOBAndExamDate extends StatefulWidget {
 class _DOBAndExamDateState extends State<DOBAndExamDate> {
   DateTime _dob = DateTime.now();
   DateTime _examdate = DateTime.now();
-  
+  DateTime _selectionDate = DateTime.now();
 
   final todos = List.generate(
     20,
@@ -32,36 +55,35 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
     ),
   );
 
-  void _showDatePicker(DATE date) {
+  void _showDatePicker(DATE? date) {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
-            lastDate: DateTime(2025))
-        .then((value) {
-      setState(() {
-        if (date == DATE.DOB) {
-          _dob = value!;
-        } else {
-          _examdate = value!;
-        }
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: _buildDOBAndExamDate(),
+            lastDate: DateTime(2100))
+        .then(
+      (value) {
+        setState(() {
+          if (date == DATE.DOB && value != null) {
+              _dob = value;
+          } 
+          else if (date == DATE.EXAMDATE && value != null) {
+              _examdate = value;
+          }
+        });
+        widget.onValueChanged(_dob, _examdate);
+      },
     );
   }
 
   @override
-  Widget _buildDOBAndExamDate() {
+  Widget build(
+    BuildContext context,
+  ) {
     return Padding(
       padding: EdgeInsets.only(
-        left: Responsive.width(10, context),
-        right: Responsive.width(20, context),
+        left: Responsive.width(7, context),
+        right: Responsive.width(7, context),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +93,8 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: Responsive.width(7, context)),
-                child: Text.rich(TextSpan(
+                child: Text.rich(
+                  TextSpan(
                   text: 'ថ្ងៃខែឆ្នាំកំណើត',
                   style: TextStyle(
                     fontFamily: 'assets/Fonts/Inter-Regular.ttf',
@@ -82,12 +105,25 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
               ),
               GestureDetector(
                 onTap: () {
+                  if (widget.focusNodeDOB != null &&
+                      widget.focusNodeExam != null &&
+                      widget.focusNodeName != null &&
+                      widget.focusNodefather != null &&
+                      widget.focusNodemother != null) {
+
+                    widget.focusNodeName!.unfocus; // Remove focus from TextFormField
+                    widget.focusNodefather!.unfocus;
+                    widget.focusNodemother!.unfocus;
+                    widget.focusNodeDOB!.requestFocus;
+                    widget.focusNodeExam!.requestFocus;
+                  }
+
                   _showDatePicker(DATE.DOB);
                 },
                 child: Container(
                   padding: EdgeInsets.only(
-                      left: Responsive.width(20, context),
-                      right: Responsive.width(37, context),
+                      left: Responsive.width(25, context),
+                      right: Responsive.width(40, context),
                       bottom: Responsive.width(10, context),
                       top: Responsive.width(10, context)),
                   decoration: BoxDecoration(
@@ -95,8 +131,7 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                         Responsive.radiusSize(10, context)),
                     color: Colors.white,
                   ),
-                  child: Container(
-                      child: Text(DateFormat.yMMMMd().format(_dob))),
+                  child: Container(child: Text(DateFormat.yMMMMd().format(_dob))),
                 ),
               )
             ],
@@ -105,7 +140,9 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: Responsive.width(5, context)),
+                padding: EdgeInsets.only(
+                    //left: Responsive.width(7, context),
+                    ),
                 child: Text.rich(TextSpan(
                   text: 'សម័យប្រលង',
                   style: TextStyle(
@@ -117,12 +154,23 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
               ),
               GestureDetector(
                 onTap: () {
+                  if (widget.focusNodeDOB != null &&
+                      widget.focusNodeExam != null &&
+                      widget.focusNodeName != null &&
+                      widget.focusNodefather != null &&
+                      widget.focusNodemother != null) {
+                    widget.focusNodeExam!.requestFocus;
+                    widget.focusNodeName!.unfocus; // Remove focus from TextFormField
+                    widget.focusNodefather!.unfocus;
+                    widget.focusNodemother!.unfocus;
+                    widget.focusNodeDOB!.unfocus;
+                  }
                   _showDatePicker(DATE.EXAMDATE);
                 },
                 child: Container(
                   padding: EdgeInsets.only(
                       left: Responsive.width(42, context),
-                      right: Responsive.width(15, context),
+                      right: Responsive.width(30, context),
                       bottom: Responsive.width(10, context),
                       top: Responsive.width(10, context)),
                   decoration: BoxDecoration(

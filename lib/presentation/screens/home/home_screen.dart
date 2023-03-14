@@ -3,11 +3,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive_animation/api_service/student_service.dart';
-import 'package:rive_animation/cubit/cubit_cubit.dart';
+import 'package:rive_animation/cubit/get/cubit_cubit.dart';
+import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/data/model/course.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
+import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/service/networkservice.dart';
+import 'package:rive_animation/presentation/testscreens/cubit_post_screen.dart';
 import 'package:rive_animation/utils/databasehelper.dart';
-import '../entryPoint/entry_point.dart';
 import 'package:rive_animation/utils/responsive.dart';
 import '../entryPoint/components/drobdownbutton.dart';
 import 'components/course_card.dart';
@@ -27,498 +30,265 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  // instance object from databaseHelper
-
   var dob = "";
   var examDate = "";
 
   static ValueNotifier<String> enteredValue = ValueNotifier('');
-
-  //List<StudentListModel>? _listStudent;
 
   DataBaseHelper dbHelper = DataBaseHelper.instance;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherName = TextEditingController();
   TextEditingController _motherName = TextEditingController();
+  bool? isValid;
 
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
     // Create BlocProvider to create state and event listener here
     BlocProvider.of<StudentCubit>(context).fetchStudent();
+
     return Scaffold(
       body: BlocBuilder<StudentCubit, StudentListModel>(
         builder: (context, state) {
-          print("Data loaded is here by NONG Piseth:");
-          print(state);
-          print(state.data?[0].name);
-          print(state.data?[0].fatherName);
-          print(state.data?[0].motherName);
-          print(state.data?[0].examDate);
-          print(state.data?[0].DOB);
-          if ((state is StudentLoading)) {
+          // Print Data in HomeScreen
+          /*
+          print("==================== Response =======================");
+          print("Name response from API : ${state.data?[0].name}");
+          print("Father name            : ${state.data?[0].fatherName}");
+          print("Mother name            : ${state.data?[0].motherName}");
+          print("ExamDate               : ${state.data?[0].examDate}");
+          print("DateOfBirth            : ${state.data?[0].DOB}");
+          */
+          if ((state.data != null)) {
+            print("studentLoaded state");
+            final students = state.data;
+            print("this is data in StudentLoaded : ${students}");
+            //========== ???. send data to student Widget .??? ==========//
+            return _student(state.data![0]);
+          } else {
             return Center(
-              child: Text('THIS IS LOADING STUDENT'),
+              child: CircularProgressIndicator(),
             );
-          } else if ((state is StudentLoaded)) {
-            final todos = state.data!;
-            child:
-            ListView.builder(
-                itemCount: todos.length,
-                itemBuilder: (context, index) {
-                  final studentData = todos[index];
-                  Dismissible(
-                    key: Key("${studentData.Id}"),
-                    child: SafeArea(
-                      bottom: false,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 40),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: Responsive.width(95, context),
-                                  top: Responsive.width(20, context)),
-                              child: Text(
-                                "ផ្លាស់ប្តូរពត៌មាន",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: courses
-                                    .map(
-                                      (course) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: CourseCard(
-                                          title: course.title,
-                                          iconSrc: course.iconSrc,
-                                          color: course.color,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                            // input ImagePicker
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: Responsive.height(20, context),
-                                  left: Responsive.width(90, context)),
-                              height: Responsive.height(200, context),
-                              width: Responsive.height(200, context),
-                              child: ImagePickerView(),
-                            ),
-                            // input name
-                            Container(
-                              height: Responsive.height(60, context),
-                              width: Responsive.width(380, context),
-                              padding: EdgeInsets.only(
-                                  left: Responsive.width(10, context),
-                                  top: Responsive.width(15, context)),
-                              child: Form(
-                                key: formKey,
-                                child: TextFormField(
-                                  controller: _nameController,
-                                  decoration: InputDecoration(
-                                    labelText: studentData.name ?? "",
-                                    hintStyle:
-                                        MaterialStateTextStyle.resolveWith(
-                                            (Set<MaterialState> states) {
-                                      final Color color = states
-                                              .contains(MaterialState.error)
-                                          ? Theme.of(context).colorScheme.error
-                                          : Colors.blue;
-                                      return TextStyle(
-                                          color: color, letterSpacing: 1.3);
-                                    }),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            Responsive.radiusSize(10, context)),
-                                        borderSide: BorderSide(
-                                            width: 1.0, color: Colors.blue)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            Responsive.radiusSize(10, context)),
-                                        borderSide: BorderSide(
-                                            width: 1.0, color: Colors.white)),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty ||
-                                        !RegExp(r'^[a-z A-Z]+$')
-                                            .hasMatch(value)) {
-                                      return "";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                ),
-                              ),
-                            ),
-                            // edit father name
-                            Container(
-                              height: Responsive.height(60, context),
-                              width: Responsive.width(380, context),
-                              padding: EdgeInsets.only(
-                                  left: Responsive.width(10, context),
-                                  top: Responsive.width(15, context)),
-                              child: TextFormField(
-                                /////// --------------- get value from user in this place /////// ---------------
-                                controller: _fatherName,
-                                autofocus: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  //labelText: studentListModel.fatherName!,
-                                  hintStyle: MaterialStateTextStyle.resolveWith(
-                                      (Set<MaterialState> states) {
-                                    final Color color = states
-                                            .contains(MaterialState.error)
-                                        ? Theme.of(context).colorScheme.error
-                                        : Colors.blue;
-                                    return TextStyle(
-                                        color: color, letterSpacing: 1.3);
-                                  }),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.blue)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.white)),
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty ||
-                                      !RegExp(r'^[a-z A-Z]+$')
-                                          .hasMatch(value)) {
-                                    return "";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                              ),
-                            ),
-                            // edit mother name
-                            Container(
-                              height: Responsive.height(60, context),
-                              width: Responsive.width(380, context),
-                              padding: EdgeInsets.only(
-                                  left: Responsive.width(10, context),
-                                  top: Responsive.width(15, context)),
-                              child: TextFormField(
-                                /////// --------------- get value from user in this place /////// ---------------
-                                controller: _motherName,
-                                autofocus: false,
-                                decoration: InputDecoration(
-                                  labelText: studentData.motherName ?? "",
-                                  hintStyle: MaterialStateTextStyle.resolveWith(
-                                      (Set<MaterialState> states) {
-                                    final Color color = states
-                                            .contains(MaterialState.error)
-                                        ? Theme.of(context).colorScheme.error
-                                        : Colors.blue;
-                                    return TextStyle(
-                                        color: color, letterSpacing: 1.3);
-                                  }),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.blue)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.white)),
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty ||
-                                      !RegExp(r'^[a-z A-Z]+$')
-                                          .hasMatch(value)) {
-                                    return "";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                              ),
-                            ),
-                            // input DOB
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: Responsive.height(10, context),
-                              ),
-                              height: Responsive.height(120, context),
-                              width: Responsive.width(400, context),
-                              child: DOBAndExamDate(),
-                            ),
-
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: Responsive.height(5, context),
-                                  left: Responsive.width(45, context)),
-                              height: Responsive.height(50, context),
-                              width: Responsive.width(300, context),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  var name = _nameController;
-                                  var fatherName = _fatherName;
-                                  var motherName = _motherName;
-                                },
-                                child: const Text('កែប្រែ'),
-                              ),
-                            ),
-                            ...recentCourses
-                                .map((course) => Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20, right: 20, bottom: 20),
-                                      child: SecondaryCourseCard(
-                                        title: course.title,
-                                        iconsSrc: course.iconSrc,
-                                        colorl: course.color,
-                                      ),
-                                    ))
-                                .toList(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                  return Container();
-                });
           }
-          return Container();
         },
       ),
     );
   }
 
-  Widget _student(StudentListModel studentListModel) {
-    return SafeArea(
-      child: Container(
-          height: Responsive.height(450, context),
-          width: double.infinity,
-          child: ListView.builder(
-              itemCount: studentListModel.data?.length,
-              itemBuilder: (context, index) {
-                final studentData = studentListModel.data![index];
-                Dismissible(
-                  key: Key("${studentData.Id}"),
-                  child: SafeArea(
-                    bottom: false,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 40),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: Responsive.width(95, context),
-                                top: Responsive.width(20, context)),
-                            child: Text(
-                              "ផ្លាស់ប្តូរពត៌មាន",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: courses
-                                  .map(
-                                    (course) => Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: CourseCard(
-                                        title: course.title,
-                                        iconSrc: course.iconSrc,
-                                        color: course.color,
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                          // input ImagePicker
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: Responsive.height(20, context),
-                                left: Responsive.width(90, context)),
-                            height: Responsive.height(200, context),
-                            width: Responsive.height(200, context),
-                            child: const ImagePickerView(),
-                          ),
-                          // input name
-                          Container(
-                            height: Responsive.height(60, context),
-                            width: Responsive.width(380, context),
-                            padding: EdgeInsets.only(
-                                left: Responsive.width(10, context),
-                                top: Responsive.width(15, context)),
-                            child: Form(
-                              key: formKey,
-                              child: TextFormField(
-                                controller: _nameController,
-                                decoration: InputDecoration(
-                                  labelText: studentData.name ?? "",
-                                  hintStyle: MaterialStateTextStyle.resolveWith(
-                                      (Set<MaterialState> states) {
-                                    final Color color = states
-                                            .contains(MaterialState.error)
-                                        ? Theme.of(context).colorScheme.error
-                                        : Colors.blue;
-                                    return TextStyle(
-                                        color: color, letterSpacing: 1.3);
-                                  }),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.blue)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Responsive.radiusSize(10, context)),
-                                      borderSide: BorderSide(
-                                          width: 1.0, color: Colors.white)),
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty ||
-                                      !RegExp(r'^[a-z A-Z]+$')
-                                          .hasMatch(value)) {
-                                    return "";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                              ),
-                            ),
-                          ),
-                          // edit father name
-                          Container(
-                            height: Responsive.height(60, context),
-                            width: Responsive.width(380, context),
-                            padding: EdgeInsets.only(
-                                left: Responsive.width(10, context),
-                                top: Responsive.width(15, context)),
-                            child: TextFormField(
-                              /////// --------------- get value from user in this place /////// ---------------
-                              controller: _fatherName,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                //labelText: studentListModel.fatherName!,
-                                hintStyle: MaterialStateTextStyle.resolveWith(
-                                    (Set<MaterialState> states) {
-                                  final Color color =
-                                      states.contains(MaterialState.error)
-                                          ? Theme.of(context).colorScheme.error
-                                          : Colors.blue;
-                                  return TextStyle(
-                                      color: color, letterSpacing: 1.3);
-                                }),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Responsive.radiusSize(10, context)),
-                                    borderSide: BorderSide(
-                                        width: 1.0, color: Colors.blue)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Responsive.radiusSize(10, context)),
-                                    borderSide: BorderSide(
-                                        width: 1.0, color: Colors.white)),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty ||
-                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                                  return "";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                            ),
-                          ),
-                          // edit mother name
-                          Container(
-                            height: Responsive.height(60, context),
-                            width: Responsive.width(380, context),
-                            padding: EdgeInsets.only(
-                                left: Responsive.width(10, context),
-                                top: Responsive.width(15, context)),
-                            child: TextFormField(
-                              /////// --------------- get value from user in this place /////// ---------------
-                              controller: _motherName,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                labelText: studentData.motherName ?? "",
-                                hintStyle: MaterialStateTextStyle.resolveWith(
-                                    (Set<MaterialState> states) {
-                                  final Color color =
-                                      states.contains(MaterialState.error)
-                                          ? Theme.of(context).colorScheme.error
-                                          : Colors.blue;
-                                  return TextStyle(
-                                      color: color, letterSpacing: 1.3);
-                                }),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Responsive.radiusSize(10, context)),
-                                    borderSide: BorderSide(
-                                        width: 1.0, color: Colors.blue)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Responsive.radiusSize(10, context)),
-                                    borderSide: BorderSide(
-                                        width: 1.0, color: Colors.white)),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty ||
-                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                                  return "";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                            ),
-                          ),
-                          // input DOB
-                          Container(
-                            padding: EdgeInsets.only(
-                              top: Responsive.height(10, context),
-                            ),
-                            height: Responsive.height(120, context),
-                            width: Responsive.width(400, context),
-                            child: DOBAndExamDate(),
-                          ),
+  Widget _student(StudentData studentListModel) {
+    print("this is data DOB : ${studentListModel.DOB}");
 
-                          /*
+    _nameController.text = "${studentListModel.name}";
+    _fatherName.text = "${studentListModel.fatherName}";
+    _motherName.text = "${studentListModel.motherName}";
+
+    String _value = '';
+    bool _isValidInput = true;
+    /*
+    void _onTextChanged() {
+      RegExp regex = RegExp(r'^[a-zA-Z0-9\s\u1780-\u17FF]+$');
+
+      setState(() {
+        _value = _nameController.text;
+        //_isValidInput = regex.hasMatch(newValue);
+      });
+    }
+    */
+    @override
+    void dispose() {
+      _nameController.dispose();
+      
+      super.dispose();
+    }
+
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 40),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: Responsive.width(95, context),
+                  top: Responsive.width(20, context)),
+              child: Text(
+                "ផ្លាស់ប្តូរពត៌មាន",
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: courses
+                    .map(
+                      (course) => Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: CourseCard(
+                          title: course.title,
+                          iconSrc: course.iconSrc,
+                          color: course.color,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            // input ImagePicker
+            Container(
+              margin: EdgeInsets.only(
+                  top: Responsive.height(4, context),
+                  left: Responsive.width(70, context)),
+              height: Responsive.height(200, context),
+              width: Responsive.height(200, context),
+              child: _imagepicked(),
+            ),
+            // input name
+            Container(
+              height: Responsive.height(60, context),
+              width: Responsive.width(380, context),
+              padding: EdgeInsets.only(
+                  left: Responsive.width(10, context),
+                  top: Responsive.width(15, context)),
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: "គោត្តនាម នាម",
+                    hintStyle: MaterialStateTextStyle.resolveWith(
+                        (Set<MaterialState> states) {
+                      final Color color = states.contains(MaterialState.error)
+                          ? Theme.of(context).colorScheme.error
+                          : Colors.blue;
+                      return TextStyle(color: color, letterSpacing: 1.3);
+                    }),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                            Responsive.radiusSize(10, context)),
+                        borderSide: BorderSide(width: 1.0, color: Colors.blue)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      borderSide: BorderSide(width: 1.0, color: Colors.white),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (!value!.isEmpty ||
+                        !RegExp(r'^[a-zA-Z0-9\s\u1780-\u17FF]+$')
+                            .hasMatch(value)) {
+                      isValid = false;
+                      return "";
+                    }
+                    //valid input
+                    else if (value.isEmpty ||
+                        RegExp(r'^[a-zA-Z0-9\s\u1780-\u17FF]+$')
+                            .hasMatch(value)) {
+                      isValid = true;
+                      return null;
+                    }
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                ),
+              ),
+            ),
+            // edit father name
+            Container(
+              height: Responsive.height(60, context),
+              width: Responsive.width(380, context),
+              padding: EdgeInsets.only(
+                  left: Responsive.width(10, context),
+                  top: Responsive.width(15, context)),
+              child: TextFormField(
+                /////// --------------- get value from user in this place /////// ---------------
+                controller: _fatherName,
+                decoration: InputDecoration(
+                  labelText: "ឈ្មោះឪពុក",
+                  hintStyle: MaterialStateTextStyle.resolveWith(
+                      (Set<MaterialState> states) {
+                    final Color color = states.contains(MaterialState.error)
+                        ? Theme.of(context).colorScheme.error
+                        : Colors.blue;
+                    return TextStyle(color: color, letterSpacing: 1.3);
+                  }),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      borderSide: BorderSide(width: 1.0, color: Colors.blue)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      borderSide: BorderSide(width: 1.0, color: Colors.white)),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty ||
+                      !RegExp(r'^[a-z A-Z]').hasMatch(value)) {
+                    isValid = true;
+                    return "";
+                  } else {
+                    isValid = false;
+                    return null;
+                  }
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+            ),
+            // edit mother name
+            Container(
+              height: Responsive.height(60, context),
+              width: Responsive.width(380, context),
+              padding: EdgeInsets.only(
+                  left: Responsive.width(10, context),
+                  top: Responsive.width(15, context)),
+              child: TextFormField(
+                /////// --------------- get value from user in this place /////// ---------------
+                controller: _motherName,
+                decoration: InputDecoration(
+                  labelText: "ឈ្មោះម្តាយ",
+                  hintStyle: MaterialStateTextStyle.resolveWith(
+                      (Set<MaterialState> states) {
+                    final Color color = states.contains(MaterialState.error)
+                        ? Theme.of(context).colorScheme.error
+                        : Colors.blue;
+                    return TextStyle(color: color, letterSpacing: 1.3);
+                  }),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      borderSide: BorderSide(width: 1.0, color: Colors.blue)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      borderSide: BorderSide(width: 1.0, color: Colors.white)),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty ||
+                      !RegExp(r'^[a-z A-Z]').hasMatch(value)) {
+                    isValid = false;
+                    return "";
+                  } else {
+                    return null;
+                  }
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+            ),
+            // input DOB
+            Container(
+              padding: EdgeInsets.only(
+                top: Responsive.height(10, context),
+              ),
+              height: Responsive.height(120, context),
+              width: Responsive.width(400, context),
+              //child: DOBAndExamDate(studentDOB: "${studentListModel.DOB}"),
+            ),
+
+            /*
               // input number of certificate
               Container(
                 height : Responsive.height(60, context),
@@ -662,39 +432,54 @@ class _HomepageState extends State<Homepage> {
 
                */
 
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: Responsive.height(5, context),
-                                left: Responsive.width(45, context)),
-                            height: Responsive.height(50, context),
-                            width: Responsive.width(300, context),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                var name = _nameController;
-                                var fatherName = _fatherName;
-                                var motherName = _motherName;
-                              },
-                              child: const Text('កែប្រែ'),
-                            ),
-                          ),
-                          ...recentCourses
-                              .map((course) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20, bottom: 20),
-                                    child: SecondaryCourseCard(
-                                      title: course.title,
-                                      iconsSrc: course.iconSrc,
-                                      colorl: course.color,
-                                    ),
-                                  ))
-                              .toList(),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-                return Container();
-              })),
+            Container(
+              margin: EdgeInsets.only(
+                  top: Responsive.height(5, context),
+                  left: Responsive.width(45, context)),
+              height: Responsive.height(50, context),
+              width: Responsive.width(300, context),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final value = _nameController.text;
+                    setState(() {
+                      // last value to api
+                    });
+                  }
+                  //print("Hello heelo");
+                  /*
+                  switch isValid {
+                    case: true 
+                     break;
+                    case: break;
+                  }
+                  */
+                },
+                child: Text('កែប្រែ'),
+              ),
+            ),
+            // ...recentCourses
+            //     .map((course) => Padding(
+            //           padding: const EdgeInsets.only(
+            //               left: 20, right: 20, bottom: 20),
+            //           child: SecondaryCourseCard(
+            //             title: course.title,
+            //             iconsSrc: course.iconSrc,
+            //             colorl: course.color,
+            //           ),
+            //         ))
+            //     .toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _imagepicked() {
+    return BlocProvider(
+      create: (BuildContext context) => CubitPostImage(
+          apiRepository: ApiRepository(apiService: DioService())),
+      child: ImagePickerView(),
     );
   }
 }

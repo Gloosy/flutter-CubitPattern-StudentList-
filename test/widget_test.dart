@@ -11,7 +11,7 @@ import 'package:rive_animation/data/repository/getrepository.dart';
 
 //import 'package:student7/main.dart';
 import 'package:rive_animation/main.dart';
-import 'package:rive_animation/data/service/getStudent_service.dart';
+import 'package:rive_animation/data/service/networkservice.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

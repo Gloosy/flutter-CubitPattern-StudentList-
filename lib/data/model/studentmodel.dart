@@ -3,7 +3,6 @@ import 'dart:ffi';
 import 'package:flutter/src/widgets/framework.dart';
 
 class StudentListModel {
-  
   int? statusCode;
   String? status;
   String? message;
@@ -25,8 +24,8 @@ class StudentListModel {
   // Method to convert to JSON for post method
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['statusCode'] = this.statusCode;
-    data['status']     = this.status;
+    data['statusCode']  = this.statusCode;
+    data['status']      = this.status;
     data['message']     = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -38,6 +37,7 @@ class StudentListModel {
 
   toList() {}
 }
+
 
 class StudentData {
   String? Id;
