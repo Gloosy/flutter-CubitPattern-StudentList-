@@ -7,12 +7,11 @@ import 'package:rive_animation/cubit/get/cubit_cubit.dart';
 import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/data/model/course.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
 import 'package:rive_animation/data/service/networkservice.dart';
-import 'package:rive_animation/presentation/testscreens/cubit_post_screen.dart';
 import 'package:rive_animation/utils/databasehelper.dart';
 import 'package:rive_animation/utils/responsive.dart';
 import '../entryPoint/components/drobdownbutton.dart';
+import 'package:rive_animation/data/repository/repository.dart';
 import 'components/course_card.dart';
 import 'components/secondary_course_card.dart';
 import 'package:rive_animation/presentation/screens/entryPoint/components/toggle_btn.dart';
@@ -146,7 +145,7 @@ class _HomepageState extends State<Homepage> {
                   left: Responsive.width(70, context)),
               height: Responsive.height(200, context),
               width: Responsive.height(200, context),
-              child: _imagepicked(),
+              //child: _imagepicked(),
             ),
             // input name
             Container(
@@ -475,11 +474,11 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget _imagepicked() {
-    return BlocProvider(
-      create: (BuildContext context) => CubitPostImage(
-          apiRepository: ApiRepository(apiService: DioService())),
-      child: ImagePickerView(),
-    );
-  }
+  // Widget _imagepicked() {
+  //   return BlocProvider(
+  //     create: (BuildContext context) => CubitPostImage(
+  //         apiRepository: ApiRepository(apiService: DioService())),
+  //     child: ImagePickerView(),
+  //   );
+  // }
 }

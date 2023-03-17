@@ -7,17 +7,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/data/model/poststudent.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
 import 'package:rive_animation/data/service/networkservice.dart';
 import 'package:rive_animation/utils/responsive.dart';
 
-class ImagePickerView extends StatefulWidget {
-  const ImagePickerView({Key? key}) : super(key: key);
+class ImagePickerViewScreen extends StatefulWidget {
+  final void Function(File image) changeImage;
+  const ImagePickerViewScreen({Key? key, required this.changeImage})
+      : super(key: key);
   @override
-  State<ImagePickerView> createState() => _ImagePickerViewState();
+  State<ImagePickerViewScreen> createState() => _ImagePickerViewScreenState();
 }
 
-class _ImagePickerViewState extends State<ImagePickerView> {
+class _ImagePickerViewScreenState extends State<ImagePickerViewScreen> {
   ImagePicker picker = ImagePicker();
   File? _image;
 
@@ -25,14 +26,16 @@ class _ImagePickerViewState extends State<ImagePickerView> {
     try {
       final imageUploadCubit = context.read<CubitPostImage>();
       final pickedImage = await ImagePicker().pickImage(source: source);
-      if (pickedImage == null) return;
-      //File img = File(image.path);
-      setState(() {
-        _image = File(pickedImage.path);
-        // method to upload image \\
-        // ======================== \\
-        //imageUploadCubit.postImage(File(pickedImage.path));
-      });
+      if (pickedImage != null) {
+        //File img = File(image.path);
+        setState(() {
+          _image = File(pickedImage.path);
+          print("this is an image from gallery ${_image}");
+        });
+        if(_image != null){
+          widget.changeImage(_image!); 
+        }
+      }
     } on PlatformException catch (e) {
       print(e.toString());
       //Navigator.of(context).pop();
@@ -46,26 +49,17 @@ class _ImagePickerViewState extends State<ImagePickerView> {
       // Image tapped
       child: Container(
         //alignment: Alignment.topCenter,
-        margin: EdgeInsets.only(
-            top: Responsive.height(30, context),
-            left: Responsive.width(66, context)),
-        height: Responsive.height(100, context),
-        width: Responsive.width(100, context),
         child: Column(
           children: [
             _image == null
-                ? Container(child: Image.asset('assets/Images/img.png'))
-                : Container(
-                    height: Responsive.height(350, context),
+                ? Container(
+                    height: Responsive.height(250, context),
                     width: Responsive.width(250, context),
-                    child: Container(
-                        margin: EdgeInsets.only(
-                            bottom: Responsive.height(90, context),
-                            //left: Responsive.width(10, context)
-                        ),
-                        height: Responsive.height(700, context),
-                        width: Responsive.width(700, context),
-                        child: Image.file(_image! as File)),
+                    child: Image.asset('assets/Images/img.png'))
+                : Container(
+                    height: Responsive.height(250, context),
+                    width: Responsive.width(250, context),
+                    child: Image.file(_image! as File),
                   ),
           ],
         ),

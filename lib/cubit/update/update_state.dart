@@ -13,7 +13,7 @@ class LoadingUpdateState extends UpdateState {}
 // loaded state
 class LoadedUpdateState extends UpdateState {
   // definition for upload image
-  final List<UpdateInfo?> postImage;
+  final List<PostStuInfo?> postImage;
   LoadedUpdateState(this.postImage);
 }
 

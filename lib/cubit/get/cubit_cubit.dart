@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/repository/repository.dart';
 
 part 'cubit_state.dart';
 

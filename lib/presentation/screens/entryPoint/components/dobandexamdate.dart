@@ -10,7 +10,6 @@ enum DATE { DOB, EXAMDATE }
 // we have to add the of element tree
 
 class DOBAndExamDate extends StatefulWidget {
-  
   final void Function(DateTime value, DateTime valueExam) onValueChanged;
 
   FocusNode? focusNodeDOB;
@@ -19,13 +18,13 @@ class DOBAndExamDate extends StatefulWidget {
   FocusNode? focusNodefather;
   FocusNode? focusNodemother;
 
-  var studentExam;
+  final String studentExam;
 
-  var studentDOB;
+  final String studentDOB;
 
   DOBAndExamDate({
     Key? key,
-    this.studentDOB,
+    required this.studentDOB,
     required this.studentExam,
     required this.onValueChanged,
     this.focusNodeDOB,
@@ -43,6 +42,21 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
   DateTime _dob = DateTime.now();
   DateTime _examdate = DateTime.now();
   DateTime _selectionDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNodeDOB != null && widget.focusNodeExam != null) {
+      _dob = DateTime.parse(widget.studentDOB);
+      _examdate = DateTime.parse(widget.studentExam);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+  }
 
   final todos = List.generate(
     20,
@@ -65,10 +79,9 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
       (value) {
         setState(() {
           if (date == DATE.DOB && value != null) {
-              _dob = value;
-          } 
-          else if (date == DATE.EXAMDATE && value != null) {
-              _examdate = value;
+            _dob = value;
+          } else if (date == DATE.EXAMDATE && value != null) {
+            _examdate = value;
           }
         });
         widget.onValueChanged(_dob, _examdate);
@@ -77,9 +90,7 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         left: Responsive.width(7, context),
@@ -93,46 +104,33 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: Responsive.width(7, context)),
-                child: Text.rich(
-                  TextSpan(
+                child: Text.rich(TextSpan(
                   text: 'ថ្ងៃខែឆ្នាំកំណើត',
                   style: TextStyle(
                     fontFamily: 'assets/Fonts/Inter-Regular.ttf',
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 )),
               ),
               GestureDetector(
                 onTap: () {
-                  if (widget.focusNodeDOB != null &&
-                      widget.focusNodeExam != null &&
-                      widget.focusNodeName != null &&
-                      widget.focusNodefather != null &&
-                      widget.focusNodemother != null) {
-
-                    widget.focusNodeName!.unfocus; // Remove focus from TextFormField
-                    widget.focusNodefather!.unfocus;
-                    widget.focusNodemother!.unfocus;
-                    widget.focusNodeDOB!.requestFocus;
-                    widget.focusNodeExam!.requestFocus;
-                  }
-
                   _showDatePicker(DATE.DOB);
                 },
                 child: Container(
-                  padding: EdgeInsets.only(
-                      left: Responsive.width(25, context),
-                      right: Responsive.width(40, context),
-                      bottom: Responsive.width(10, context),
-                      top: Responsive.width(10, context)),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        Responsive.radiusSize(10, context)),
-                    color: Colors.white,
-                  ),
-                  child: Container(child: Text(DateFormat.yMMMMd().format(_dob))),
-                ),
+                    padding: EdgeInsets.only(
+                        left: Responsive.width(30, context),
+                        right: Responsive.width(35, context),
+                        bottom: Responsive.width(10, context),
+                        top: Responsive.width(10, context)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          Responsive.radiusSize(10, context)),
+                      color: Colors.white,
+                    ),
+                    child: Text(widget.studentDOB ??
+                        DateFormat('dd-MM-yyyy').format(_dob) ??
+                        '')),
               )
             ],
           ),
@@ -147,30 +145,19 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                   text: 'សម័យប្រលង',
                   style: TextStyle(
                     fontFamily: 'Inter-SemiBold.ttf',
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 )),
               ),
               GestureDetector(
                 onTap: () {
-                  if (widget.focusNodeDOB != null &&
-                      widget.focusNodeExam != null &&
-                      widget.focusNodeName != null &&
-                      widget.focusNodefather != null &&
-                      widget.focusNodemother != null) {
-                    widget.focusNodeExam!.requestFocus;
-                    widget.focusNodeName!.unfocus; // Remove focus from TextFormField
-                    widget.focusNodefather!.unfocus;
-                    widget.focusNodemother!.unfocus;
-                    widget.focusNodeDOB!.unfocus;
-                  }
                   _showDatePicker(DATE.EXAMDATE);
                 },
                 child: Container(
                   padding: EdgeInsets.only(
-                      left: Responsive.width(42, context),
-                      right: Responsive.width(30, context),
+                      left: Responsive.width(30, context),
+                      right: Responsive.width(35, context),
                       bottom: Responsive.width(10, context),
                       top: Responsive.width(10, context)),
                   decoration: BoxDecoration(
@@ -178,7 +165,11 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                         Responsive.radiusSize(10, context)),
                     color: Colors.white,
                   ),
-                  child: Text(DateFormat.yMMMMd().format(_examdate)),
+                  // ignore: unnecessary_string_interpolations
+                  child: Text(
+                    widget.studentExam ??
+                        DateFormat('dd-MM-yyyy').format(_examdate),
+                  ),
                 ),
               )
             ],

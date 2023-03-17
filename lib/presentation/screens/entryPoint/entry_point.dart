@@ -2,10 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
-import 'package:rive_animation/presentation/screens/home/home_screen.dart';
 import 'package:rive_animation/presentation/testscreens/cubit_update_screen.dart';
-import 'package:rive_animation/utils/responsive.dart';
-import 'package:rive_animation/utils/rive_utils.dart';
 import 'package:rive_animation/data/model/menu.dart';
 import 'components/menu_btn.dart';
 import 'components/side_bar.dart';
@@ -91,7 +88,7 @@ class _EntryPointState extends State<EntryPoint>
                   borderRadius: BorderRadius.all(
                     Radius.circular(24),
                   ),
-                  child: UpdateScreen()
+                  child: PostScreen()
                 ),
               ),
             ),

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rive_animation/data/model/poststudent.dart';
-import 'package:rive_animation/data/model/updatemodel.dart';
+import 'package:rive_animation/data/model/postStuInfo.dart';
 import 'package:rive_animation/data/service/app_url.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -31,7 +31,6 @@ class ApiRepository {
       return StudentListModel();
     }
   }
-  
   // Method to Upload Image student
 
   Future<PostImage> uploadImage(File file) async {
@@ -47,14 +46,14 @@ class ApiRepository {
 
   // Method to updateInformation student
   
-  Future<UpdateInfo> updateInfo(String name, String DOB, String examDate, String fatherName, String motherName) async {
+  Future<PostStuInfo> updateInfo(String name, String DOB, String examDate, String fatherName, String motherName) async {
     final studentRespone = await apiService.updateInfo(
         name, DOB, examDate, fatherName, motherName, AppUrl.updateInfo);
     print(studentRespone);
     if (studentRespone?.statusCode == 200) {
       print("Check response in repository ${studentRespone}");
-      return studentRespone!.data = UpdateInfo.fromJson(studentRespone.data);
+      return studentRespone!.data = PostStuInfo.fromJson(studentRespone.data);
     }
-    return UpdateInfo();
+    return PostStuInfo();
   }
 }

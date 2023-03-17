@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rive_animation/data/model/updatemodel.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/model/postStuInfo.dart';
+import 'package:rive_animation/data/repository/repository.dart';
 
 part 'update_state.dart';
 
-class UpdateCubit extends Cubit<UpdateInfo> {
+class UpdateCubit extends Cubit<PostStuInfo> {
   final ApiRepository apiRepository;
 
-  UpdateCubit({required this.apiRepository}) : super(UpdateInfo());
+  UpdateCubit({required this.apiRepository}) : super(PostStuInfo());
 
-  UpdateInfo? updateInfo;
+  PostStuInfo? postInfo;
 
   // create method handle userInput
   void onChangedValue(String name, String fatherName, String motherName,
@@ -26,23 +26,23 @@ class UpdateCubit extends Cubit<UpdateInfo> {
       name        : name       ?? "Unknown name",
       fatherName  : fatherName ?? "Unknown fatherName",
       motherName  : motherName ?? "Unknown motherName",
-      dOB         : DOB        ?? updateInfo?.data?.dOB ?? "Unknown dOB",
-      examDate    : exam       ?? updateInfo?.data?.examDate ?? "Unknown examDate",
+      dOB         : DOB        ?? postInfo?.data?.dOB ?? "Unknown dOB",
+      examDate    : exam       ?? postInfo?.data?.examDate ?? "Unknown examDate",
     );
-    if (updateInfo == null) {
-      updateInfo = UpdateInfo(data: data);
+    if (postInfo == null) {
+      postInfo = PostStuInfo(data: data);
     }
     else{
       print("data in class Data   : ${data.name}");
-      final updateValue = updateInfo!.copyWith(data: data);
-      print("this is updatedValue : ${updateValue}");
+      final updateValue = postInfo!.copyWith(data: data);
+      print("this is updatedValue :\n ${updateValue}");
       emit(updateValue!);
     }
   }
 
   // method for update information
   Future<void> update() async {
-    final submitValue = updateInfo;
+    final submitValue = postInfo;
 
     var response = await apiRepository.updateInfo(
         submitValue?.data?.name as String,

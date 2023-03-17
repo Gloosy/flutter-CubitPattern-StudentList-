@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/repository/repository.dart';
 
 //import 'package:student7/main.dart';
 import 'package:rive_animation/main.dart';
@@ -17,9 +17,7 @@ void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     final Router router;
-    await tester.pumpWidget(MyApp(
-        apiRepository:
-            ApiRepository(apiService: DioService())));
+    await tester.pumpWidget(MyApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

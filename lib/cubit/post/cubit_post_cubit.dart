@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rive_animation/data/model/poststudent.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/repository/repository.dart';
 part 'cubit_post_state.dart';
 
 enum ImageUploadStatus { initial, uploading, success, failure }

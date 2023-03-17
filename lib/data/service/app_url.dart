@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class AppUrl {
   static String baseUrl     = "https://api-ds-uat.azurewebsites.net/api/v1";

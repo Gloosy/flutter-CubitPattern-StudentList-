@@ -1,42 +1,50 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:rive_animation/cubit/get/cubit_cubit.dart';
 import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
-import 'package:rive_animation/data/model/course.dart';
-import 'package:rive_animation/data/model/postStuInfo.dart';
-import 'package:rive_animation/data/repository/repository.dart';
-import 'package:rive_animation/data/service/networkservice.dart';
+import 'package:rive_animation/data/model/studentmodel.dart';
 import 'package:rive_animation/presentation/screens/entryPoint/components/dobandexamdate.dart';
 import 'package:rive_animation/presentation/screens/entryPoint/components/imagepicker.dart';
-import 'package:rive_animation/presentation/screens/home/components/course_card.dart';
 import 'package:rive_animation/utils/responsive.dart';
 
-class PostScreen extends StatefulWidget {
-  const PostScreen({Key? key}) : super(key: key);
+class UpdateScreen extends StatefulWidget {
+  const UpdateScreen({Key? key}) : super(key: key);
 
   @override
   _UpdateScreenState createState() => _UpdateScreenState();
 }
 
-class _UpdateScreenState extends State<PostScreen> {
+class _UpdateScreenState extends State<UpdateScreen> {
   String? _textValue;
   bool? _isKeyboardVisible = false;
 
   // apply textFormField controller
-  TextEditingController _nameController       = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
   TextEditingController _motherNameController = TextEditingController();
-  TextEditingController _dobController        = TextEditingController();
-  TextEditingController _examController       = TextEditingController();
+  TextEditingController _dobController = TextEditingController();
+  TextEditingController _examController = TextEditingController();
 
-  
+  String? name;
+  String? fatherName;
+  String? motherName;
+  String? DOB;
+  String? examDate;
 
   @override
   void initState() {
     super.initState();
+    _nameController.text       = "";
+    _fatherNameController.text = "";
+    _motherNameController.text = "";
+    _dobController.text        = "";
+    _examController.text       = "";
   }
 
   @override
@@ -56,73 +64,113 @@ class _UpdateScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<StudentCubit>(context).fetchStudent();
     return Scaffold(
-      body: BlocBuilder<UpdateCubit, PostStuInfo>(builder: (context, state) {
-        return _updateForm(state, _nameController, _fatherNameController,
-            _motherNameController, _dobController, _examController);
+      body: BlocBuilder<StudentCubit, StudentListModel>(
+          builder: (context, state) {
+        if ((state.data != null)) {
+          print("studentLoaded state");
+          final students = state.data;
+          print("this is data in StudentLoaded : ${students}");
+          return _updateForm(
+              state.data![0],
+              _nameController,
+              _fatherNameController,
+              _motherNameController,
+              _dobController,
+              _examController);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       }),
     );
   }
 
   Widget _updateForm(
-      PostStuInfo updateInfo,
+      StudentData studentData,
       TextEditingController _nameController,
       TextEditingController _fatherNameController,
       TextEditingController _motherNameController,
       TextEditingController _dobController,
       TextEditingController _examController) {
-        
     var inputFormat = DateFormat('MM-dd-yyyy');
 
     // this method update in Student
     final updateMethod = BlocProvider.of<UpdateCubit>(context);
+    final imageUpload = context.read<CubitPostImage>();
 
-    final _formKeyName       = GlobalKey<FormState>();
+    final _formKeyName = GlobalKey<FormState>();
     final _formKeyFatherName = GlobalKey<FormState>();
     final _formKeyMotherName = GlobalKey<FormState>();
 
-    // method to update
+    File? imageSelect;
 
     void submitUpdate() {
+
       // method to update
+      print("this is an image in btn submit ${imageSelect}");
+      if (imageSelect != null) {
+        imageUpload.postImage(File(imageSelect!.path));
+      }
       updateMethod.update();
-      _nameController.text = "";
+      _nameController.text       = "";
       _fatherNameController.text = "";
       _motherNameController.text = "";
     }
 
+    // if (studentData.name != "" &&
+    //     studentData.motherName != "" &&
+    //     studentData.fatherName != "") {
+      _nameController.text       = "${studentData.name}";
+      //_fatherNameController.text = "${studentData.fatherName}";
+      _motherNameController.text = "${studentData.motherName}";
+    //}
     return ListView(
       children: [
         SizedBox(height: Responsive.height(20, context)),
         Padding(
-          padding: EdgeInsets.only(
-              left: Responsive.width(95, context),
-              top: Responsive.width(20, context)),
+          padding: EdgeInsets.only(left: Responsive.width(50, context)),
           child: Text(
-            "បញ្ចូលពត៌មានថ្មី",
+            "ផ្លាស់ប្តូរពត៌មានសិស្ស",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: Colors.black,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
           ),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: courses
-                .map(
-                  (course) => Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: CourseCard(
-                      title: course.title,
-                      iconSrc: course.iconSrc,
-                      color: course.color,
-                    ),
-                  ),
-                )
-                .toList(),
+        // SingleChildScrollView(
+        //   scrollDirection: Axis.horizontal,
+        //   child: Row(
+        //     children: courses
+        //         .map(
+        //           (course) => Padding(
+        //             padding: const EdgeInsets.only(left: 20),
+        //             child: CourseCard(
+        //               title: course.title,
+        //               iconSrc: course.iconSrc,
+        //               color: course.color,
+        //             ),
+        //           ),
+        //         )
+        //         .toList(),
+        //   ),
+        // ),
+        SizedBox(
+          height: Responsive.height(10, context),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: Responsive.width(5, context),
+          ),
+          child: ImagePickerViewScreen(
+            changeImage: (File image) {
+              imageSelect = image;
+            },
           ),
         ),
+
         SizedBox(height: Responsive.height(10, context)),
         Container(
           padding: EdgeInsets.only(
@@ -148,14 +196,14 @@ class _UpdateScreenState extends State<PostScreen> {
         ),
         SizedBox(height: Responsive.height(10, context)),
         DOBAndExamDate(
-          studentDOB: "${updateInfo.data?.dOB}",
-          studentExam: "${updateInfo.data?.examDate}",
+          studentDOB: "${studentData.DOB}",
+          studentExam: "${studentData.examDate}",
           onValueChanged: (DateTime value, DateTime valueExam) {
             _dobController.text = inputFormat.format(value);
             _examController.text = inputFormat.format(valueExam);
           },
         ),
-        SizedBox(height: Responsive.height(100, context)),
+        SizedBox(height: Responsive.height(10, context)),
         Container(
           padding: EdgeInsets.only(
               left: Responsive.width(7, context),
@@ -174,8 +222,10 @@ class _UpdateScreenState extends State<PostScreen> {
                     _motherNameController.text,
                     _dobController.text,
                     _examController.text);
+
                 // method to update student
                 submitUpdate();
+
                 CupertinoAlertDialog(
                   title: Text('Success Updated'),
                   actions: [
@@ -229,7 +279,8 @@ class _UpdateScreenState extends State<PostScreen> {
                   : Colors.blue;
               return TextStyle(color: color, letterSpacing: 1.3);
             }),
-            floatingLabelStyle: MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+            floatingLabelStyle:
+                MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
                   ? Theme.of(context).colorScheme.error
                   : Colors.orange;
@@ -273,10 +324,10 @@ class _UpdateScreenState extends State<PostScreen> {
       key: _formKeyFatherName,
       child: SizedBox(
         height: Responsive.height(44, context),
-        width: Responsive.width(365, context),
+        width: Responsive.width(100, context),
         child: TextFormField(
           decoration: InputDecoration(
-            labelText: "ឈ្មោះឪពុក",
+            labelText: "ឈ្មោះ ឪពុក",
             hintStyle:
                 MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
@@ -284,7 +335,8 @@ class _UpdateScreenState extends State<PostScreen> {
                   : Colors.blue;
               return TextStyle(color: color, letterSpacing: 1.3);
             }),
-            floatingLabelStyle: MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+            floatingLabelStyle:
+                MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
                   ? Theme.of(context).colorScheme.error
                   : Colors.orange;
@@ -299,8 +351,9 @@ class _UpdateScreenState extends State<PostScreen> {
                   BorderRadius.circular(Responsive.radiusSize(10, context)),
               borderSide: BorderSide(width: 1.0, color: Colors.white),
             ),
-            contentPadding: EdgeInsets.all(16.0),
+            contentPadding: EdgeInsets.all(13.0),
           ),
+          autofocus: false,
           controller: _fatherNameController,
           validator: (value) {
             if (value!.isEmpty ||
@@ -311,7 +364,6 @@ class _UpdateScreenState extends State<PostScreen> {
               return null;
             }
           },
-          autofocus: false,
           onSaved: (value) {
             _fatherNameController.text = value!;
           },
@@ -339,13 +391,13 @@ class _UpdateScreenState extends State<PostScreen> {
                   : Colors.blue;
               return TextStyle(color: color, letterSpacing: 2.3);
             }),
-            floatingLabelStyle: MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+            floatingLabelStyle:
+                MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
                   ? Theme.of(context).colorScheme.error
                   : Colors.orange;
               return TextStyle(color: color, letterSpacing: 1.3);
             }),
-            
             focusedBorder: OutlineInputBorder(
                 borderRadius:
                     BorderRadius.circular(Responsive.radiusSize(10, context)),

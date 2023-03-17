@@ -6,30 +6,28 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
-import 'package:rive_animation/data/model/updatemodel.dart';
-import 'package:rive_animation/data/repository/getrepository.dart';
+import 'package:rive_animation/data/model/postStuInfo.dart';
 import 'app_url.dart';
 import 'dart:convert';
 
 class DioService {
   Dio dio = Dio();
 
-  Future<Response?> updateInfo(String name, String DOB, String examDate, String fatherName,
-      String motherName, String url) async {
+  Future<Response?> updateInfo(String name, String DOB, String examDate,
+      String fatherName, String motherName, String url) async {
     //Dio dio = Dio();
     var headers = {
       'appid': 'BEB03CD3-7204-405F-BE41-58EC27F2AEBD',
-      'Content-Type': 'application/json',
       'Cookie':
           'ARRAffinity=eef76bc7016e3795417723304454635e1de6050271109330ad17ec80dff7ecae; ARRAffinitySameSite=eef76bc7016e3795417723304454635e1de6050271109330ad17ec80dff7ecae'
     };
-     var formData = {
-        "Id"        : "1,360",
-        "name"      : name,
-        "DOB"       : DOB,
-        "examDate"  : examDate,
-        "fatherName": fatherName,
-        "motherName": motherName
+    var formData = {
+      "Id": "1,360",
+      "name": name,
+      "DOB": DOB,
+      "examDate": examDate,
+      "fatherName": fatherName,
+      "motherName": motherName
     };
 
     try {
@@ -39,21 +37,56 @@ class DioService {
           options: Options(headers: headers, responseType: ResponseType.json));
       return response;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.badResponse) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error response   <<<<<==================");
-      } else if (e.type == DioErrorType.connectionTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error Timeout   <<<<<==================");
-      } else if (e.type == DioErrorType.receiveTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            '==================>>>>>   unable to connect to the server   <<<<<==================');
+      int? statusCode = e.response?.statusCode;
+      switch (statusCode) {
+        case 400:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()} <<<<<==================");
+          break;
+        case 401:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 402:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 403:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 404:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> Request Not Found <<<<<==================");
+          break;
+        case 405:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 414:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 500:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
       }
       // add more catch
       print(e.toString());
@@ -86,21 +119,56 @@ class DioService {
           data: formData, options: Options(headers: headers));
       return response;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.badResponse) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error response   <<<<<==================");
-      } else if (e.type == DioErrorType.connectionTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error Timeout   <<<<<==================");
-      } else if (e.type == DioErrorType.receiveTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            '==================>>>>>   unable to connect to the server   <<<<<==================');
+      int? statusCode = e.response?.statusCode;
+      switch (statusCode) {
+        case 400:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()} <<<<<==================");
+          break;
+        case 401:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 402:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 403:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 404:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> Request Not Found <<<<<==================");
+          break;
+        case 405:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 414:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 500:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
       }
       // add more catch
       print(e.toString());
@@ -127,21 +195,56 @@ class DioService {
               responseType: ResponseType.json,
               method: 'GET'));
     } on DioError catch (e) {
-      if (e.type == DioErrorType.badResponse) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error response   <<<<<==================");
-      } else if (e.type == DioErrorType.connectionTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            "==================>>>>>   Error Timeout   <<<<<==================");
-      } else if (e.type == DioErrorType.receiveTimeout) {
-        print(
-            "/////////////////////////////////////////////////////////////////////////////////");
-        print(
-            '==================>>>>>   unable to connect to the server   <<<<<==================');
+      int? statusCode = e.response?.statusCode;
+      switch (statusCode) {
+        case 400:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()} <<<<<==================");
+          break;
+        case 401:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 402:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 403:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 404:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> Request Not Found <<<<<==================");
+          break;
+        case 405:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 414:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
+        case 500:
+          print(
+              "/////////////////////////////////////////////////////////////////////////////////");
+          print(
+              "\n ==================>>>>> ${e.error.toString()}  <<<<<==================");
+          break;
       }
       // add more catch
       print(e.toString());

@@ -33,7 +33,6 @@ dependencies:
     sdk: flutter
   sqflite: any
   provider: ^6.0.4
-  http: any
   path: ^1.8.2
   image_picker: ^0.8.4+4
   rive: ^0.9.1

@@ -1,14 +1,14 @@
 import 'dart:ffi';
 
-class UpdateInfo {
+class PostStuInfo {
   int? statusCode;
   String? status;
   String? message;
   Data? data;
 
-  UpdateInfo({this.statusCode, this.status, this.message, this.data});
+  PostStuInfo({this.statusCode, this.status, this.message, this.data});
 
-  UpdateInfo.fromJson(Map<String, dynamic> json) {
+  PostStuInfo.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     status     = json['status'];
     message    = json['message'];
@@ -25,10 +25,10 @@ class UpdateInfo {
     }
     return data;
   }
-  UpdateInfo? copyWith({
+  PostStuInfo? copyWith({
     Data? data,
   }) {
-    return UpdateInfo(
+    return PostStuInfo(
       data: data ?? this.data,
     );
   }
@@ -42,8 +42,8 @@ class Data {
   String? fatherName;
   String? motherName;
 
-  Data(
-      {this.id,
+  Data({
+      this.id,
       this.name,
       this.dOB,
       this.examDate,

@@ -38,7 +38,6 @@ class StudentListModel {
   toList() {}
 }
 
-
 class StudentData {
   String? Id;
   String? name;
