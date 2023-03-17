@@ -120,11 +120,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
       _motherNameController.text = "";
     }
 
-    // if (studentData.name != "" &&
-    //     studentData.motherName != "" &&
-    //     studentData.fatherName != "") {
-      _nameController.text       = "${studentData.name}";
-      //_fatherNameController.text = "${studentData.fatherName}";
+    // setValue to text
+    
+    _nameController.text       = "${studentData.name}";
       _motherNameController.text = "${studentData.motherName}";
     //}
     return ListView(

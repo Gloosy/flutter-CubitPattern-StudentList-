@@ -40,10 +40,16 @@ class DOBAndExamDate extends StatefulWidget {
 
 class _DOBAndExamDateState extends State<DOBAndExamDate> {
   //DateTime _examDateText = DateTime.now();
-  DateTime _dob = DateTime.now();
-  DateTime _examdate = DateTime.now();
+  late DateTime _dob;
+  late DateTime _examdate;
   DateTime _selectionDate = DateTime.now();
   DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+  @override
+  void initState() {
+    super.initState();
+    _dob = dateFormat.parse(widget.studentDOB);
+    _examdate = dateFormat.parse(widget.studentExam);
+  }
 
   final todos = List.generate(
     20,
@@ -77,20 +83,8 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
     });
   }
 
-  // void _updateExamDateText() {
-  //   setState(() {
-  //     _examDateText = dateFormat.parse("${_examdate}");
-  //   });
-  //   print("updated exam date text: $_examDateText");
-  // }
-
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      _dob = dateFormat.parse(widget.studentDOB);
-      _examdate = dateFormat.parse(widget.studentExam);
-    });
-
     return Padding(
       padding: EdgeInsets.only(
         left: Responsive.width(7, context),
