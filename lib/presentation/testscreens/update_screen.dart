@@ -31,20 +31,15 @@ class _UpdateScreenState extends State<UpdateScreen> {
   TextEditingController _dobController = TextEditingController();
   TextEditingController _examController = TextEditingController();
 
-  String? name;
-  String? fatherName;
-  String? motherName;
-  String? DOB;
-  String? examDate;
-
   @override
   void initState() {
     super.initState();
-    _nameController.text       = "";
+    _nameController.text = "";
     _fatherNameController.text = "";
     _motherNameController.text = "";
-    _dobController.text        = "";
-    _examController.text       = "";
+    _dobController.text = "";
+    _examController.text = "";
+    _onKeyboardVisibilityChanged();
   }
 
   @override
@@ -108,7 +103,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
     File? imageSelect;
 
     void submitUpdate() {
-
       // method to update
       print("this is an image in btn submit ${imageSelect}");
       if (imageSelect != null) {
@@ -121,9 +115,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
     }
 
     // setValue to text
-    
-    _nameController.text       = "${studentData.name}";
-      _motherNameController.text = "${studentData.motherName}";
+    _nameController.text = "${studentData.name}";
+    _motherNameController.text = "${studentData.motherName}";
+
     //}
     return ListView(
       children: [
@@ -168,7 +162,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
             },
           ),
         ),
-
         SizedBox(height: Responsive.height(10, context)),
         Container(
           padding: EdgeInsets.only(
@@ -213,6 +206,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               if (_formKeyMotherName.currentState!.validate() &&
                   _formKeyName.currentState!.validate() &&
                   _formKeyFatherName.currentState!.validate()) {
+
                 // method to change event on User
                 updateMethod.onChangedValue(
                     _nameController.text,
@@ -232,6 +226,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     )
                   ],
                 );
+
                 //show Toast for success
                 Fluttertoast.showToast(
                     msg: "Updated Success",
@@ -242,6 +237,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               } else {
+
                 //show Toast for failed
                 Fluttertoast.showToast(
                     msg: "Fail to Updated",

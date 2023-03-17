@@ -18,7 +18,7 @@ class ApiRepository {
   // Method to GetPostList Image student
 
   Future<StudentListModel> getPostList() async {
-    var response = await apiService.fetchStudent(AppUrl.getArticles);
+    var response = await apiService.fetchStudent(AppUrl.getArticles, AppUrl.header);
     bool results = await InternetConnectionChecker().hasConnection;
     if (results == true) {
       var data = await response?.data;
@@ -31,11 +31,12 @@ class ApiRepository {
       return StudentListModel();
     }
   }
+  
   // Method to Upload Image student
 
   Future<PostImage> uploadImage(File file) async {
     final studentMap =
-        await apiService.uploadedMultipleFiles(file, AppUrl.postImage);
+        await apiService.uploadedMultipleFiles(file, AppUrl.postImage, AppUrl.header);
     if (studentMap!.data['statusCode'] == 200) {
       var responseData = PostImage.fromJson(studentMap.data);
       print('data response in repository : $responseData');
@@ -48,7 +49,7 @@ class ApiRepository {
   
   Future<PostStuInfo> updateInfo(String name, String DOB, String examDate, String fatherName, String motherName) async {
     final studentRespone = await apiService.updateInfo(
-        name, DOB, examDate, fatherName, motherName, AppUrl.updateInfo);
+        name, DOB, examDate, fatherName, motherName, AppUrl.updateInfo, AppUrl.header);
     print(studentRespone);
     if (studentRespone?.statusCode == 200) {
       print("Check response in repository ${studentRespone}");
@@ -57,3 +58,4 @@ class ApiRepository {
     return PostStuInfo();
   }
 }
+ 

@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 
 enum DATE { DOB, EXAMDATE }
 
-// we have to add the of element tree
-
 class DOBAndExamDate extends StatefulWidget {
   final void Function(DateTime value, DateTime valueExam) onValueChanged;
 
@@ -39,15 +37,19 @@ class DOBAndExamDate extends StatefulWidget {
 }
 
 class _DOBAndExamDateState extends State<DOBAndExamDate> {
-  //DateTime _examDateText = DateTime.now();
+
   late DateTime _dob;
   late DateTime _examdate;
+
   DateTime _selectionDate = DateTime.now();
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+  DateFormat dateFormat   = DateFormat('dd-MM-yyyy');
+
+  // initState
   @override
   void initState() {
     super.initState();
-    _dob = dateFormat.parse(widget.studentDOB);
+    // initail Value with API
+    _dob      = dateFormat.parse(widget.studentDOB);
     _examdate = dateFormat.parse(widget.studentExam);
   }
 
@@ -73,7 +75,6 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
         setState(() {
           _dob = value;
         });
-        print("set State : $_dob");
       } else if (date == DATE.EXAMDATE && value != null) {
         setState(() {
           _examdate = value;
