@@ -39,24 +39,11 @@ class DOBAndExamDate extends StatefulWidget {
 }
 
 class _DOBAndExamDateState extends State<DOBAndExamDate> {
+  //DateTime _examDateText = DateTime.now();
   DateTime _dob = DateTime.now();
   DateTime _examdate = DateTime.now();
   DateTime _selectionDate = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.focusNodeDOB != null && widget.focusNodeExam != null) {
-      _dob = DateTime.parse(widget.studentDOB);
-      _examdate = DateTime.parse(widget.studentExam);
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-  }
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
   final todos = List.generate(
     20,
@@ -75,22 +62,35 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100))
-        .then(
-      (value) {
+        .then((value) {
+      if (date == DATE.DOB && value != null) {
         setState(() {
-          if (date == DATE.DOB && value != null) {
-            _dob = value;
-          } else if (date == DATE.EXAMDATE && value != null) {
-            _examdate = value;
-          }
+          _dob = value;
         });
-        widget.onValueChanged(_dob, _examdate);
-      },
-    );
+        print("set State : $_dob");
+      } else if (date == DATE.EXAMDATE && value != null) {
+        setState(() {
+          _examdate = value;
+        });
+      }
+      widget.onValueChanged(_dob, _examdate);
+    });
   }
+
+  // void _updateExamDateText() {
+  //   setState(() {
+  //     _examDateText = dateFormat.parse("${_examdate}");
+  //   });
+  //   print("updated exam date text: $_examDateText");
+  // }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _dob = dateFormat.parse(widget.studentDOB);
+      _examdate = dateFormat.parse(widget.studentExam);
+    });
+
     return Padding(
       padding: EdgeInsets.only(
         left: Responsive.width(7, context),
@@ -118,19 +118,19 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                   _showDatePicker(DATE.DOB);
                 },
                 child: Container(
-                    padding: EdgeInsets.only(
-                        left: Responsive.width(30, context),
-                        right: Responsive.width(35, context),
-                        bottom: Responsive.width(10, context),
-                        top: Responsive.width(10, context)),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          Responsive.radiusSize(10, context)),
-                      color: Colors.white,
-                    ),
-                    child: Text(widget.studentDOB ??
-                        DateFormat('dd-MM-yyyy').format(_dob) ??
-                        '')),
+                  padding: EdgeInsets.only(
+                      left: Responsive.width(30, context),
+                      right: Responsive.width(35, context),
+                      bottom: Responsive.width(10, context),
+                      top: Responsive.width(10, context)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        Responsive.radiusSize(10, context)),
+                    color: Colors.white,
+                  ),
+                  child: Text(DateFormat('dd-MM-yyyy').format(_dob)),
+                  key: Key('DOB'),
+                ),
               )
             ],
           ),
@@ -167,8 +167,7 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                   ),
                   // ignore: unnecessary_string_interpolations
                   child: Text(
-                    widget.studentExam ??
-                        DateFormat('dd-MM-yyyy').format(_examdate),
+                    DateFormat('dd-MM-yyyy').format(_examdate),
                   ),
                 ),
               )
