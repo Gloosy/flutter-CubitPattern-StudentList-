@@ -14,6 +14,7 @@ class _HomepageState extends State<HomepageTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: ListView(
         children: [
           SizedBox(height: Responsive.height(70, context)),

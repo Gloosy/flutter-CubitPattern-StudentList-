@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rive_animation/constants.dart';
-import 'package:rive_animation/cubit/get/cubit_cubit.dart';
 import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
@@ -79,33 +78,34 @@ class _UpdateScreenState extends State<UpdateScreen> {
       TextEditingController _examController) {
     var inputFormat = DateFormat('MM-dd-yyyy');
 
-    // this method update in Student
+    // this method update in Student and upload image
     final updateMethod = BlocProvider.of<UpdateCubit>(context);
-    final imageUpload = context.read<CubitPostImage>();
+    final imageUpload  = context.read<CubitPostImage>();
 
-    final _formKeyName = GlobalKey<FormState>();
+    final _formKeyName       = GlobalKey<FormState>();
     final _formKeyFatherName = GlobalKey<FormState>();
     final _formKeyMotherName = GlobalKey<FormState>();
 
     File? imageSelect;
 
     void submitUpdate() {
+
       // method to update
       print("this is an image in btn submit ${imageSelect}");
       if (imageSelect != null) {
         imageUpload.postImage(File(imageSelect!.path));
       }
       updateMethod.update();
-      _nameController.text = "";
+      _nameController.text       = "";
       _fatherNameController.text = "";
       _motherNameController.text = "";
+
     }
 
     // setValue to text
-    _nameController.text = "${studentData.name}";
+    _nameController.text       = "${studentData.name}";
     _motherNameController.text = "${studentData.motherName}";
 
-    //}
     return ListView(
       children: [
         SizedBox(height: Responsive.height(40, context)),
@@ -166,12 +166,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
         ),
         SizedBox(height: Responsive.height(40, context)),
         Container(
-          padding: EdgeInsets.only(
-              left: Responsive.width(7, context),
-              right: Responsive.height(7, context)),
-          height: Responsive.height(50, context),
-          width: Responsive.width(30, context),
-          child: ElevatedButton(
+          padding   : EdgeInsets.only(
+              left  : Responsive.width(7, context),
+              right : Responsive.height(7, context)),
+          height    : Responsive.height(50, context),
+          width     : Responsive.width(30, context),
+          child     : ElevatedButton(
             onPressed: () {
               if (_formKeyMotherName.currentState!.validate() &&
                   _formKeyName.currentState!.validate() &&
@@ -253,7 +253,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           autofocus: true,
           controller: _nameController,
           validator: (value) {
-            if (value!.isEmpty || nameValidatorRegExp.hasMatch(value)) {
+            if (value!.isEmpty || !nameValidatorRegExp.hasMatch(value)) {
               return "";
             } else {
               return null;
