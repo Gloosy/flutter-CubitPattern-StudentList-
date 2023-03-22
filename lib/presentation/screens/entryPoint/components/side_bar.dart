@@ -35,7 +35,7 @@ class _SideBarState extends State<SideBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const InfoCard(
-                name: "Lyheang",
+                name: "USER1234",
                 bio: "User",
               ),
               Padding(
@@ -60,10 +60,6 @@ class _SideBarState extends State<SideBar> {
                               case "Search":
                                 Navigator.pushNamed(
                                   context, SearchScreen.routeName);
-                                break;
-                              case "Home": 
-                                Navigator.pushNamed(
-                                  context, HomepageTest.routeName);
                                 break;
                             }
                           });

@@ -44,6 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Screen'),
+        backgroundColor:Color(0xFF17203A) ,
       ),
       body: BlocBuilder<StudentCubit, StudentListModel>(
         builder: (context, state) {

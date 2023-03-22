@@ -64,7 +64,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
     // receive data as Object of StudentData Class
     StudentData? studentData = ModalRoute.of(context)!.settings.arguments as StudentData;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor:Color(0xFF17203A),
+      ),
       body: _updateForm(studentData, _nameController, _fatherNameController, _motherNameController, _dobController, _examController),
     );
   }

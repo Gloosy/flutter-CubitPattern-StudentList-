@@ -14,7 +14,9 @@ class _HomepageState extends State<HomepageTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor:Color(0xFF17203A) ,
+      ),
       body: ListView(
         children: [
           SizedBox(height: Responsive.height(70, context)),
