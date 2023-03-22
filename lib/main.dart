@@ -5,6 +5,9 @@ import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
 import 'package:rive_animation/data/repository/repository.dart';
 import 'package:rive_animation/data/service/networkservice.dart';
+import 'package:rive_animation/presentation/screens/entryPoint/entry_point.dart';
+import 'package:rive_animation/route.dart';
+import 'package:rive_animation/presentation/testscreens/homescreen_test.dart';
 import 'package:rive_animation/presentation/testscreens/update_screen.dart';
 
 void main() {
@@ -23,20 +26,18 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (BuildContext context) =>
-                StudentCubit(apiRepository: ApiRepository(apiService: DioService()))),
+            create: (BuildContext context) => StudentCubit(
+                apiRepository: ApiRepository(apiService: DioService()))),
         BlocProvider(
-            create  : (BuildContext context) =>
-            UpdateCubit(apiRepository: ApiRepository(apiService: DioService())
-        )),
+            create: (BuildContext context) => UpdateCubit(
+                apiRepository: ApiRepository(apiService: DioService()))),
         BlocProvider(
-            create: ((BuildContext context) => 
-            CubitPostImage(apiRepository: ApiRepository(apiService: DioService()))
-        )),
+            create: ((BuildContext context) => CubitPostImage(
+                apiRepository: ApiRepository(apiService: DioService())))),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: UpdateScreen(),
+        home: EntryPoint(),
         theme: ThemeData(
           scaffoldBackgroundColor: Color(0xFFEEF1F8),
           primarySwatch: Colors.blue,
@@ -51,6 +52,8 @@ class MyApp extends StatelessWidget {
             errorBorder: defaultInputBorder,
           ),
         ),
+        initialRoute: EntryPoint.routeName,
+        routes: routes,
       ),
     );
     /*

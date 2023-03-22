@@ -29,8 +29,8 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
-    /*
+    //return Container();
+  
     return Scaffold(
       body: Stack(
         children: [
@@ -126,7 +126,5 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
         ],
       ),
     );
-
-     */
   }
 }

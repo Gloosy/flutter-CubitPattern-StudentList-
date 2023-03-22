@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:rive_animation/constants.dart';
 import 'package:rive_animation/cubit/get/cubit_cubit.dart';
 import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
@@ -14,6 +14,8 @@ import 'package:rive_animation/presentation/screens/entryPoint/components/imagep
 import 'package:rive_animation/utils/responsive.dart';
 
 class UpdateScreen extends StatefulWidget {
+  static String routeName = "/update_screen";
+
   const UpdateScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,15 +23,16 @@ class UpdateScreen extends StatefulWidget {
 }
 
 class _UpdateScreenState extends State<UpdateScreen> {
+
   String? _textValue;
   bool? _isKeyboardVisible = false;
 
   // apply textFormField controller
-  TextEditingController _nameController = TextEditingController();
+  TextEditingController _nameController       = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
   TextEditingController _motherNameController = TextEditingController();
-  TextEditingController _dobController = TextEditingController();
-  TextEditingController _examController = TextEditingController();
+  TextEditingController _dobController        = TextEditingController();
+  TextEditingController _examController       = TextEditingController();
 
   @override
   void initState() {
@@ -39,11 +42,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _motherNameController.text = "";
     _dobController.text = "";
     _examController.text = "";
-    _onKeyboardVisibilityChanged();
   }
 
   @override
   void dispose() {
+    super.dispose();
     _nameController.dispose();
     _fatherNameController.dispose();
     _motherNameController.dispose();
@@ -59,27 +62,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<StudentCubit>(context).fetchStudent();
+    // receive data as Object of StudentData Class
+    StudentData? studentData = ModalRoute.of(context)!.settings.arguments as StudentData;
     return Scaffold(
-      body: BlocBuilder<StudentCubit, StudentListModel>(
-          builder: (context, state) {
-        if ((state.data != null)) {
-          print("studentLoaded state");
-          final students = state.data;
-          print("this is data in StudentLoaded : ${students}");
-          return _updateForm(
-              state.data![0],
-              _nameController,
-              _fatherNameController,
-              _motherNameController,
-              _dobController,
-              _examController);
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      }),
+      appBar: AppBar(),
+      body: _updateForm(studentData, _nameController, _fatherNameController, _motherNameController, _dobController, _examController),
     );
   }
 
@@ -109,7 +96,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         imageUpload.postImage(File(imageSelect!.path));
       }
       updateMethod.update();
-      _nameController.text       = "";
+      _nameController.text = "";
       _fatherNameController.text = "";
       _motherNameController.text = "";
     }
@@ -121,34 +108,17 @@ class _UpdateScreenState extends State<UpdateScreen> {
     //}
     return ListView(
       children: [
-        SizedBox(height: Responsive.height(20, context)),
+        SizedBox(height: Responsive.height(40, context)),
         Padding(
           padding: EdgeInsets.only(left: Responsive.width(50, context)),
           child: Text(
             "ផ្លាស់ប្តូរពត៌មានសិស្ស",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: Colors.black,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
           ),
         ),
-        // SingleChildScrollView(
-        //   scrollDirection: Axis.horizontal,
-        //   child: Row(
-        //     children: courses
-        //         .map(
-        //           (course) => Padding(
-        //             padding: const EdgeInsets.only(left: 20),
-        //             child: CourseCard(
-        //               title: course.title,
-        //               iconSrc: course.iconSrc,
-        //               color: course.color,
-        //             ),
-        //           ),
-        //         )
-        //         .toList(),
-        //   ),
-        // ),
         SizedBox(
           height: Responsive.height(10, context),
         ),
@@ -194,7 +164,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
             _examController.text = inputFormat.format(valueExam);
           },
         ),
-        SizedBox(height: Responsive.height(10, context)),
+        SizedBox(height: Responsive.height(40, context)),
         Container(
           padding: EdgeInsets.only(
               left: Responsive.width(7, context),
@@ -206,7 +176,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
               if (_formKeyMotherName.currentState!.validate() &&
                   _formKeyName.currentState!.validate() &&
                   _formKeyFatherName.currentState!.validate()) {
-
                 // method to change event on User
                 updateMethod.onChangedValue(
                     _nameController.text,
@@ -218,15 +187,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 // method to update student
                 submitUpdate();
 
-                CupertinoAlertDialog(
-                  title: Text('Success Updated'),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: Text('Yes'),
-                    )
-                  ],
-                );
-
                 //show Toast for success
                 Fluttertoast.showToast(
                     msg: "Updated Success",
@@ -237,7 +197,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               } else {
-
                 //show Toast for failed
                 Fluttertoast.showToast(
                     msg: "Fail to Updated",
@@ -256,8 +215,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
     );
   }
 
-  Widget _textFormFieldName(
-      TextEditingController _nameController, GlobalKey _formKeyName) {
+  Widget _textFormFieldName(TextEditingController _nameController, 
+  GlobalKey _formKeyName) {
     return Form(
       key: _formKeyName,
       child: SizedBox(
@@ -294,9 +253,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           autofocus: true,
           controller: _nameController,
           validator: (value) {
-            if (value!.isEmpty ||
-                !RegExp(r'^\s*[a-zA-Z0-9\u1780-\u17FF]+(?:\s+[a-zA-Z0-9\u1780-\u17FF]+)*\s*$')
-                    .hasMatch(value)) {
+            if (value!.isEmpty || nameValidatorRegExp.hasMatch(value)) {
               return "";
             } else {
               return null;
@@ -350,9 +307,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           autofocus: false,
           controller: _fatherNameController,
           validator: (value) {
-            if (value!.isEmpty ||
-                !RegExp(r'^\s*[a-zA-Z0-9\u1780-\u17FF]+(?:\s+[a-zA-Z0-9\u1780-\u17FF]+)*\s*$')
-                    .hasMatch(value)) {
+            if (value!.isEmpty || !nameValidatorRegExp.hasMatch(value)) {
               return "";
             } else {
               return null;
@@ -404,9 +359,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
             contentPadding: EdgeInsets.all(16.0),
           ),
           validator: (value) {
-            if (value!.isEmpty ||
-                !RegExp(r'^\s*[a-zA-Z0-9\u1780-\u17FF]+(?:\s+[a-zA-Z0-9\u1780-\u17FF]+)*\s*$')
-                    .hasMatch(value)) {
+            if (value!.isEmpty || !nameValidatorRegExp.hasMatch(value)) {
               return "";
             } else {
               return null;

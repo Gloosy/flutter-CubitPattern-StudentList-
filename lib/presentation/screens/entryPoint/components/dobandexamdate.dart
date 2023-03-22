@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rive_animation/data/model/studentmodel.dart';
-import 'package:rive_animation/presentation/screens/home/home_screen.dart';
 import 'package:rive_animation/utils/responsive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -37,19 +36,18 @@ class DOBAndExamDate extends StatefulWidget {
 }
 
 class _DOBAndExamDateState extends State<DOBAndExamDate> {
-
   late DateTime _dob;
   late DateTime _examdate;
 
   DateTime _selectionDate = DateTime.now();
-  DateFormat dateFormat   = DateFormat('dd-MM-yyyy');
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
   // initState
   @override
   void initState() {
     super.initState();
     // initail Value with API
-    _dob      = dateFormat.parse(widget.studentDOB);
+    _dob = dateFormat.parse(widget.studentDOB);
     _examdate = dateFormat.parse(widget.studentExam);
   }
 
@@ -114,17 +112,21 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                 },
                 child: Container(
                   padding: EdgeInsets.only(
-                      left: Responsive.width(30, context),
-                      right: Responsive.width(35, context),
-                      bottom: Responsive.width(10, context),
-                      top: Responsive.width(10, context)),
+                      left: Responsive.width(45, context),
+                      right: Responsive.width(45, context),
+                      bottom: Responsive.width(8, context),
+                      top: Responsive.width(8, context)),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                         Responsive.radiusSize(10, context)),
                     color: Colors.white,
                   ),
-                  child: Text(DateFormat('dd-MM-yyyy').format(_dob)),
-                  key: Key('DOB'),
+                  child: Text(DateFormat('dd-MM-yyyy').format(_dob),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: Responsive.fontSize(16, context),
+                    ),
+                  ),
                 ),
               )
             ],
@@ -134,8 +136,8 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    //left: Responsive.width(7, context),
-                    ),
+                  left: Responsive.width(7, context),
+                ),
                 child: Text.rich(TextSpan(
                   text: 'សម័យប្រលង',
                   style: TextStyle(
@@ -151,10 +153,10 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                 },
                 child: Container(
                   padding: EdgeInsets.only(
-                      left: Responsive.width(30, context),
-                      right: Responsive.width(35, context),
-                      bottom: Responsive.width(10, context),
-                      top: Responsive.width(10, context)),
+                      left: Responsive.width(45, context),
+                      right: Responsive.width(45, context),
+                      bottom: Responsive.width(8, context),
+                      top: Responsive.width(8, context)),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                         Responsive.radiusSize(10, context)),
@@ -163,6 +165,10 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
                   // ignore: unnecessary_string_interpolations
                   child: Text(
                     DateFormat('dd-MM-yyyy').format(_examdate),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: Responsive.fontSize(16, context),
+                    ),
                   ),
                 ),
               )

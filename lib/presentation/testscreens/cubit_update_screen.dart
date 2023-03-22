@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:rive_animation/cubit/post/cubit_post_cubit.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
 import 'package:rive_animation/data/model/course.dart';
 import 'package:rive_animation/data/model/postStuInfo.dart';
@@ -31,8 +30,6 @@ class _UpdateScreenState extends State<PostScreen> {
   TextEditingController _motherNameController = TextEditingController();
   TextEditingController _dobController        = TextEditingController();
   TextEditingController _examController       = TextEditingController();
-
-  
 
   @override
   void initState() {
@@ -71,8 +68,8 @@ class _UpdateScreenState extends State<PostScreen> {
       TextEditingController _motherNameController,
       TextEditingController _dobController,
       TextEditingController _examController) {
-        
-    var inputFormat = DateFormat('MM-dd-yyyy');
+
+    var inputFormat = DateFormat('MM-dd-yyyy'); 
 
     // this method update in Student
     final updateMethod = BlocProvider.of<UpdateCubit>(context);
@@ -82,11 +79,10 @@ class _UpdateScreenState extends State<PostScreen> {
     final _formKeyMotherName = GlobalKey<FormState>();
 
     // method to update
-
     void submitUpdate() {
       // method to update
       updateMethod.update();
-      _nameController.text = "";
+      _nameController.text       = "";
       _fatherNameController.text = "";
       _motherNameController.text = "";
     }

@@ -18,9 +18,7 @@ class _DropDownButtonState extends State<DropDownButton> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scaffold(
         body: Container(
-          width: double.infinity,
           child: Stack(
             children: [
               Positioned(
@@ -44,7 +42,6 @@ class _DropDownButtonState extends State<DropDownButton> {
               Positioned(
                 top : Responsive.height(10, context),
                   right: Responsive.width(120, context),
-
                   child: Container(
                       width: Responsive.width(210, context),
                       decoration: BoxDecoration(
@@ -79,7 +76,6 @@ class _DropDownButtonState extends State<DropDownButton> {
             ],
           ),
       ),
-    ),
     );
   }
   Widget _dropdownyearexam(){
@@ -112,7 +108,6 @@ class _DropDownButtonState extends State<DropDownButton> {
                     fontWeight: FontWeight.w600),
               ),
               onChanged: (value){
-
                 _chosenYear = value!;
               },
             ),

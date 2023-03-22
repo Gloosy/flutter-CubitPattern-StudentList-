@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:rive_animation/data/model/menu.dart';
+import 'package:rive_animation/presentation/testscreens/homescreen_test.dart';
+import 'package:rive_animation/presentation/testscreens/search_screen.dart';
 import 'package:rive_animation/utils/rive_utils.dart';
 import 'info_card.dart';
 import 'side_menu.dart';
@@ -17,7 +19,6 @@ class _SideBarState extends State<SideBar> {
   Menu selectedSideMenu = sidebarMenus.first;
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Container(
         width: 288,
@@ -55,6 +56,16 @@ class _SideBarState extends State<SideBar> {
                           RiveUtils.chnageSMIBoolState(menu.rive.status!);
                           setState(() {
                             selectedSideMenu = menu;
+                            switch (selectedSideMenu.title) {
+                              case "Search":
+                                Navigator.pushNamed(
+                                  context, SearchScreen.routeName);
+                                break;
+                              case "Home": 
+                                Navigator.pushNamed(
+                                  context, HomepageTest.routeName);
+                                break;
+                            }
                           });
                         },
                         riveOnInit: (artboard) {

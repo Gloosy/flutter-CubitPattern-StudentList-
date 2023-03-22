@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/src/widgets/framework.dart';
 
 class StudentListModel {
@@ -9,7 +7,9 @@ class StudentListModel {
   List<StudentData>? data;
 
   StudentListModel({this.statusCode, this.status, this.message, this.data});
+
   // Method to convert from JSON to Flutter object
+
   StudentListModel.fromJson(Map json) {
     statusCode = json['statusCode'];
     status     = json['status'];
@@ -32,9 +32,7 @@ class StudentListModel {
     }
     return data;
   }
-
   map(Widget Function(dynamic e) param0) {}
-
   toList() {}
 }
 

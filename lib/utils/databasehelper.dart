@@ -1,12 +1,13 @@
 import 'package:path/path.dart';
+import 'package:rive_animation/data/model/studentmodel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 class DataBaseHelper{
 
 
-  static const String _databaseName = 'studentinfodb.db';
-  static const int _databaseVersion = 1;
-  static const String tableName    = 'student_tb';
+  static const String _databaseName    = 'studentinfodb.db';
+  static const int _databaseVersion    = 1;
+  static const String tableName        = 'student_tb';
 
   static const String columnId         = 'id';
   static const String columnName       = 'Hello';
@@ -41,8 +42,8 @@ class DataBaseHelper{
         )
         ''');
   }
-  /*
-  Future<int> insert(StudentInfo studentInfo) async{
+  
+  Future<int> insert(StudentData studentInfo) async{
 
     Database? db = await instance!.database;
     return await db!.insert(tableName, {
@@ -51,9 +52,9 @@ class DataBaseHelper{
       'motherName' : studentInfo.motherName
     });
   }
-  */
-  // Future<List<Map<String, dynamic>>?> queryAllRows() async{
-  //   Database? db = await instance!.database;
-  //   return await db?.query(tableName);
-  // }
+  
+  Future<List<Map<String, dynamic>>?> queryAllRows() async{
+    Database? db = await instance!.database;
+    return await db?.query(tableName);
+  }
 }

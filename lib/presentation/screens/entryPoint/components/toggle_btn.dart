@@ -83,15 +83,12 @@ class _ToggleButtonState extends State<ToggleButton> {
           ),
           GestureDetector(
             onTap: () {
-              setState(
-                    () {
-                  _toggleXAlign = widget._rightToggleAlign;
-
-                  _leftDescriptionColor = widget.inactiveTextColor;
+              setState( () {
+                  _toggleXAlign          = widget._rightToggleAlign;
+                  _leftDescriptionColor  = widget.inactiveTextColor;
                   _rightDescriptionColor = widget.activeTextColor;
                 },
               );
-
               widget.onRightToggleActive();
             },
             child: Align(
@@ -111,15 +108,13 @@ class _ToggleButtonState extends State<ToggleButton> {
           ),
           GestureDetector(
             onTap: () {
-              setState(
-                    () {
+              setState( 
+                () {
                   _toggleXAlign = widget._leftToggleAlign;
-
                   _leftDescriptionColor = widget.activeTextColor;
                   _rightDescriptionColor = widget.inactiveTextColor;
                 },
               );
-
               widget.onLeftToggleActive();
             },
             child: Align(

@@ -1,13 +1,22 @@
 import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
+import 'package:rive_animation/presentation/screens/entryPoint/components/btm_nav_item.dart';
 import 'package:rive_animation/presentation/testscreens/cubit_update_screen.dart';
 import 'package:rive_animation/data/model/menu.dart';
+import 'package:rive_animation/presentation/testscreens/homescreen_test.dart';
+import 'package:rive_animation/presentation/testscreens/search_screen.dart';
+import 'package:rive_animation/presentation/testscreens/update_screen.dart';
+import 'package:rive_animation/utils/responsive.dart';
+import 'package:rive_animation/utils/rive_utils.dart';
 import 'components/menu_btn.dart';
 import 'components/side_bar.dart';
 
 class EntryPoint extends StatefulWidget {
+  static String routeName = "/";
+
   const EntryPoint({super.key});
 
   @override
@@ -16,10 +25,10 @@ class EntryPoint extends StatefulWidget {
 
 class _EntryPointState extends State<EntryPoint>
     with SingleTickerProviderStateMixin {
-  bool isSideBarOpen = false;
+  bool isSideBarOpen     = false;
 
   Menu selectedBottonNav = bottomNavItems.first;
-  Menu selectedSideMenu = sidebarMenus.first;
+  Menu selectedSideMenu  = sidebarMenus.first;
 
   late SMIBool isMenuOpenInput;
 
@@ -27,6 +36,13 @@ class _EntryPointState extends State<EntryPoint>
     if (selectedBottonNav != menu) {
       setState(() {
         selectedBottonNav = menu;
+      });
+    }
+  }
+  void updateSelectedNavbar(Menu menu) {
+    if (selectedSideMenu != menu){
+      setState(() {
+        selectedSideMenu = menu;
       });
     }
   }
@@ -88,7 +104,7 @@ class _EntryPointState extends State<EntryPoint>
                   borderRadius: BorderRadius.all(
                     Radius.circular(24),
                   ),
-                  child: PostScreen()
+                  child: HomepageTest(),
                 ),
               ),
             ),
@@ -103,7 +119,8 @@ class _EntryPointState extends State<EntryPoint>
                 isMenuOpenInput.value = !isMenuOpenInput.value;
                 if (_animationController.value == 0) {
                   _animationController.forward();
-                } else {
+                }
+                else  {
                   _animationController.reverse();
                 }
                 setState(
@@ -169,7 +186,7 @@ class _EntryPointState extends State<EntryPoint>
           ),
         ),
       ),
-    */
+      */
     );
   }
 }

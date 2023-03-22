@@ -11,8 +11,8 @@ class StudentCubit extends Cubit<StudentListModel> {
   final ApiRepository apiRepository;
   StudentCubit({required this.apiRepository}) : super(StudentListModel());
   // method to fetch data 
-  void fetchStudent() async {
-    var data = await apiRepository.getPostList();
+  void fetchStudent(String letterNum) async {
+    var data = await apiRepository.getPostList(letterNum);
     emit(data);
   }
 }

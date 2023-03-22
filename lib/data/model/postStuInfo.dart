@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class PostStuInfo {
   int? statusCode;
   String? status;

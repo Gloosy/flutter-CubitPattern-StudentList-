@@ -22,20 +22,20 @@ List<Menu> sidebarMenus = [
         artboard: "SEARCH",
         stateMachineName: "SEARCH_Interactivity"),
   ),
-  Menu(
-    title: "Favorites",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "LIKE/STAR",
-        stateMachineName: "STAR_Interactivity"),
-  ),
-  Menu(
-    title: "Help",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "CHAT",
-        stateMachineName: "CHAT_Interactivity"),
-  ),
+  // Menu(
+  //   title: "Favorites",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "LIKE/STAR",
+  //       stateMachineName: "STAR_Interactivity"),
+  // ),
+  // Menu(
+  //   title: "Help",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "CHAT",
+  //       stateMachineName: "CHAT_Interactivity"),
+  // ),
 ];
 List<Menu> sidebarMenus2 = [
   Menu(
