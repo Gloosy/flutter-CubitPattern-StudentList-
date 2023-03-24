@@ -15,7 +15,7 @@ class _HomepageState extends State<HomepageTest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:Color(0xFF17203A) ,
+        backgroundColor:Color(0xFF17203A),
       ),
       body: ListView(
         children: [
@@ -25,9 +25,9 @@ class _HomepageState extends State<HomepageTest> {
             child: Text(
               "កម្មវិធីកែប្រែវិញ្ញាបនបត្រ",
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ],

@@ -45,6 +45,10 @@ dependencies:
   fluttertoast: ^8.2.1
   internet_connection_checker: any
   flutter_bloc: any
+
+  # Firebase 
+  cloud_firestore: ^4.4.5
+
   shared_preferences: any
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

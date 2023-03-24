@@ -36,11 +36,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = "";
+    _nameController.text       = "";
     _fatherNameController.text = "";
     _motherNameController.text = "";
-    _dobController.text = "";
-    _examController.text = "";
+    _dobController.text        = "";
+    _examController.text       = "";
   }
 
   @override
@@ -65,6 +65,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     StudentData? studentData = ModalRoute.of(context)!.settings.arguments as StudentData;
     return Scaffold(
       appBar: AppBar(
+        title: Text('Update Screen'),
         backgroundColor:Color(0xFF17203A),
       ),
       body: _updateForm(studentData, _nameController, _fatherNameController, _motherNameController, _dobController, _examController),
@@ -78,6 +79,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       TextEditingController _motherNameController,
       TextEditingController _dobController,
       TextEditingController _examController) {
+
     var inputFormat = DateFormat('MM-dd-yyyy');
 
     // this method update in Student and upload image
@@ -116,9 +118,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
           child: Text(
             "ផ្លាស់ប្តូរពត៌មានសិស្ស",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         SizedBox(
@@ -143,26 +145,26 @@ class _UpdateScreenState extends State<UpdateScreen> {
         ),
         SizedBox(height: Responsive.height(10, context)),
         Container(
-          padding: EdgeInsets.only(
-              left: Responsive.width(7, context),
-              right: Responsive.height(7, context)),
+          padding   : EdgeInsets.only(
+              left  : Responsive.width(7, context),
+              right : Responsive.height(7, context)),
           child: _textFormFieldfatherName(
               _fatherNameController, _formKeyFatherName),
         ),
         SizedBox(height: Responsive.height(10, context)),
         Container(
-          padding: EdgeInsets.only(
-              left: Responsive.width(7, context),
-              right: Responsive.height(7, context)),
+          padding   : EdgeInsets.only(
+              left  : Responsive.width(7, context),
+              right : Responsive.height(7, context)),
           child: _textFormFieldMotherName(
               _motherNameController, _formKeyMotherName),
         ),
         SizedBox(height: Responsive.height(10, context)),
         DOBAndExamDate(
-          studentDOB: "${studentData.DOB}",
-          studentExam: "${studentData.examDate}",
-          onValueChanged: (DateTime value, DateTime valueExam) {
-            _dobController.text = inputFormat.format(value);
+          studentDOB             : "${studentData.DOB}",
+          studentExam            : "${studentData.examDate}",
+          onValueChanged         : (DateTime value, DateTime valueExam) {
+            _dobController.text  = inputFormat.format(value);
             _examController.text = inputFormat.format(valueExam);
           },
         ),
@@ -178,6 +180,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               if (_formKeyMotherName.currentState!.validate() &&
                   _formKeyName.currentState!.validate() &&
                   _formKeyFatherName.currentState!.validate()) {
+
                 // method to change event on User
                 updateMethod.onChangedValue(
                     _nameController.text,
@@ -199,6 +202,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               } else {
+                
                 //show Toast for failed
                 Fluttertoast.showToast(
                     msg: "Fail to Updated",

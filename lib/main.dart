@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive_animation/cubit/get/cubit_cubit.dart';
@@ -8,11 +9,14 @@ import 'package:rive_animation/data/service/networkservice.dart';
 import 'package:rive_animation/presentation/screens/entryPoint/entry_point.dart';
 import 'package:rive_animation/route.dart';
 import 'package:rive_animation/presentation/testscreens/homescreen_test.dart';
-import 'package:rive_animation/presentation/testscreens/update_screen.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseFirestore.instance;
+
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   //const MyApp({super.key, required ApiService apiService});
@@ -43,13 +47,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: "Intel",
           inputDecorationTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.white,
-            errorStyle: TextStyle(height: 0),
-            border: defaultInputBorder,
-            enabledBorder: defaultInputBorder,
-            focusedBorder: defaultInputBorder,
-            errorBorder: defaultInputBorder,
+            filled        : true,
+            fillColor     : Colors.white,
+            errorStyle    : TextStyle(height: 0),
+            border        : defaultInputBorder,
+            enabledBorder : defaultInputBorder,
+            focusedBorder : defaultInputBorder,
+            errorBorder   : defaultInputBorder,
           ),
         ),
         initialRoute: EntryPoint.routeName,

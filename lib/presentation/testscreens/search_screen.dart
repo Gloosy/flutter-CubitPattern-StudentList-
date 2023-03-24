@@ -29,8 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     // Perform any custom cleanup operations here
-    super
-        .dispose(); // Call super.dispose() to release resources used by the widget
+    super.dispose(); // Call super.dispose() to release resources used by the widget
   }
 
   @override
@@ -44,14 +43,14 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Screen'),
-        backgroundColor:Color(0xFF17203A) ,
+        backgroundColor:Color(0xFF17203A),
       ),
       body: BlocBuilder<StudentCubit, StudentListModel>(
         builder: (context, state) {
         if ((state.data != null)) {
           //assign value to studentInfo
           studentData = state.data![0];
-
+          
           return ListView(
             children: [
               SizedBox(

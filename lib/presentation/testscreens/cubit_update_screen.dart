@@ -6,10 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:rive_animation/cubit/update/update_cubit.dart';
 import 'package:rive_animation/data/model/course.dart';
 import 'package:rive_animation/data/model/postStuInfo.dart';
-import 'package:rive_animation/data/repository/repository.dart';
-import 'package:rive_animation/data/service/networkservice.dart';
 import 'package:rive_animation/presentation/screens/entryPoint/components/dobandexamdate.dart';
-import 'package:rive_animation/presentation/screens/entryPoint/components/imagepicker.dart';
 import 'package:rive_animation/presentation/screens/home/components/course_card.dart';
 import 'package:rive_animation/utils/responsive.dart';
 
@@ -208,8 +205,8 @@ class _UpdateScreenState extends State<PostScreen> {
     );
   }
 
-  Widget _textFormFieldName(
-      TextEditingController _nameController, GlobalKey _formKeyName) {
+  Widget _textFormFieldName( TextEditingController _nameController,
+    GlobalKey _formKeyName) {
     return Form(
       key: _formKeyName,
       child: SizedBox(
