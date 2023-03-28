@@ -32,7 +32,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   TextEditingController _motherNameController = TextEditingController();
   TextEditingController _dobController        = TextEditingController();
   TextEditingController _examController       = TextEditingController();
-
+  
   @override
   void initState() {
     super.initState();
@@ -42,6 +42,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _dobController.text        = "";
     _examController.text       = "";
   }
+
+
 
   @override
   void dispose() {
@@ -64,6 +66,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
     // receive data as Object of StudentData Class
     StudentData? studentData = ModalRoute.of(context)!.settings.arguments as StudentData;
     return Scaffold(
+
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Update Screen'),
         backgroundColor:Color(0xFF17203A),

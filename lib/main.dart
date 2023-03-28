@@ -10,9 +10,12 @@ import 'package:rive_animation/presentation/screens/entryPoint/entry_point.dart'
 import 'package:rive_animation/route.dart';
 import 'package:rive_animation/presentation/testscreens/homescreen_test.dart';
 
-Future main() async {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FirebaseFirestore.instance;
+  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
