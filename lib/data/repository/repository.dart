@@ -16,7 +16,9 @@ class ApiRepository {
   Future<StudentListModel> getPostList(String letterNumber) async {
     var response = await apiService.fetchStudent(
         "${AppUrl.getArticles}${letterNumber}", AppUrl.header);
+
     //print("${AppUrl.getArticles}${letterNumber}");
+
     bool results = await InternetConnectionChecker().hasConnection;
     if (results == true) {
       var data = await response?.data;
@@ -42,7 +44,7 @@ class ApiRepository {
     }
     return PostImage();
   }
-
+  
   // Method to updateInformation student
 
   Future<PostStuInfo> updateInfo(String name, String DOB, String examDate,

@@ -108,6 +108,7 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
               ),
               GestureDetector(
                 onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   _showDatePicker(DATE.DOB);
                 },
                 child: Container(
@@ -149,6 +150,7 @@ class _DOBAndExamDateState extends State<DOBAndExamDate> {
               ),
               GestureDetector(
                 onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   _showDatePicker(DATE.EXAMDATE);
                 },
                 child: Container(

@@ -34,10 +34,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     TextEditingController _searchController = TextEditingController();
 
     StudentData studentData;
-
+    // call blocProvider
     BlocProvider.of<StudentCubit>(context).fetchStudent(_searchController.text);
 
     return Scaffold(
@@ -283,7 +284,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 return null;
               }
             },
-            autovalidateMode: AutovalidateMode.always,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
         ),
       ],

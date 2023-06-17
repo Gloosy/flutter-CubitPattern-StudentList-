@@ -18,6 +18,7 @@ class PostScreen extends StatefulWidget {
 }
 
 class _UpdateScreenState extends State<PostScreen> {
+
   String? _textValue;
   bool? _isKeyboardVisible = false;
 
@@ -64,7 +65,7 @@ class _UpdateScreenState extends State<PostScreen> {
       TextEditingController _fatherNameController,
       TextEditingController _motherNameController,
       TextEditingController _dobController,
-      TextEditingController _examController) {
+      TextEditingController _examController){
 
     var inputFormat = DateFormat('MM-dd-yyyy'); 
 
@@ -89,11 +90,11 @@ class _UpdateScreenState extends State<PostScreen> {
         SizedBox(height: Responsive.height(20, context)),
         Padding(
           padding: EdgeInsets.only(
-              left: Responsive.width(95, context),
-              top: Responsive.width(20, context)),
+              left : Responsive.width(95, context),
+              top  : Responsive.width(20, context)),
           child: Text(
             "បញ្ចូលពត៌មានថ្មី",
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            style  : Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
                 ),
@@ -102,8 +103,7 @@ class _UpdateScreenState extends State<PostScreen> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: courses
-                .map(
+            children: courses.map(
                   (course) => Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: CourseCard(
@@ -113,7 +113,7 @@ class _UpdateScreenState extends State<PostScreen> {
                     ),
                   ),
                 )
-                .toList(),
+            .toList(),
           ),
         ),
         SizedBox(height: Responsive.height(10, context)),
@@ -160,6 +160,7 @@ class _UpdateScreenState extends State<PostScreen> {
               if (_formKeyMotherName.currentState!.validate() &&
                   _formKeyName.currentState!.validate() &&
                   _formKeyFatherName.currentState!.validate()) {
+
                 // method to change event on User
                 updateMethod.onChangedValue(
                     _nameController.text,
@@ -204,6 +205,7 @@ class _UpdateScreenState extends State<PostScreen> {
       ],
     );
   }
+
 
   Widget _textFormFieldName( TextEditingController _nameController,
     GlobalKey _formKeyName) {

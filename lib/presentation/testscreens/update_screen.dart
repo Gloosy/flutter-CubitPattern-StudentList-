@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,8 +41,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _dobController.text        = "";
     _examController.text       = "";
   }
-
-
 
   @override
   void dispose() {
@@ -282,6 +279,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget _textFormFieldfatherName(TextEditingController _fatherNameController,
       GlobalKey _formKeyFatherName) {
     return Form(
+
       key: _formKeyFatherName,
       child: SizedBox(
         height: Responsive.height(44, context),
@@ -335,6 +333,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   Widget _textFormFieldMotherName(TextEditingController _motherNameController,
       GlobalKey _formKeyMotherName) {
+
     return Form(
       key: _formKeyMotherName,
       child: SizedBox(

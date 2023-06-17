@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive_animation/cubit/get/cubit_cubit.dart';
@@ -17,9 +18,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // NotificationSettings settings = await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+ // print('User granted permission: ${settings.authorizationStatus}');
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  print('Got a message whilst in the foreground!');
+  print('Message data: ${message.data}');
+
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
+});
+
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   //const MyApp({super.key, required ApiService apiService});
@@ -50,13 +70,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: "Intel",
           inputDecorationTheme: InputDecorationTheme(
-            filled        : true,
-            fillColor     : Colors.white,
-            errorStyle    : TextStyle(height: 0),
-            border        : defaultInputBorder,
-            enabledBorder : defaultInputBorder,
-            focusedBorder : defaultInputBorder,
-            errorBorder   : defaultInputBorder,
+            filled: true,
+            fillColor: Colors.white,
+            errorStyle: TextStyle(height: 0),
+            border: defaultInputBorder,
+            enabledBorder: defaultInputBorder,
+            focusedBorder: defaultInputBorder,
+            errorBorder: defaultInputBorder,
           ),
         ),
         initialRoute: EntryPoint.routeName,
